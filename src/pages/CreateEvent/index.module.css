@@ -1,0 +1,76 @@
+.fanTicketsPoweredBy,
+.lOOTBOX {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  color: #ffffff;
+}
+.lOOTBOX {
+  left: 164px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-fira-sans);
+}
+.groupDiv {
+  position: relative;
+  width: 252px;
+  height: 19px;
+  flex-shrink: 0;
+}
+.frameDiv {
+  background-color: #1cabfc;
+  display: flex;
+  flex-direction: column;
+  padding: 9px 69px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.b {
+  position: relative;
+  display: inline-block;
+}
+.frameDiv1 {
+  background-color: var(--color-gray-100);
+  display: flex;
+  flex-direction: row;
+  padding: 79px 0px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  font-size: 200px;
+  color: #000;
+  margin: 0 auto;
+}
+.anonymousUserClickToLogin {
+  position: relative;
+}
+.startViewDefaultSimple {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
+.frameDiv3 {
+  background-color: var(--color-gray-100);
+  width: 100%;
+  max-width: 390px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30px 33px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+}

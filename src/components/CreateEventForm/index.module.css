@@ -1,0 +1,64 @@
+.createEventFormContainer {
+  width: 100%;
+  padding: 0px 2rem;
+  box-sizing: border-box;
+}
+.frameDiv2 {
+  width: 390px;
+  height: 189px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: var(--font-size-base);
+  color: #777;
+}
+.groupDiv1 {
+  position: relative;
+  width: 326px;
+  height: 115px;
+  flex-shrink: 0;
+}
+.additionalSettings {
+  color: var(--color-gray-100);
+  font-style: italic;
+}
+.additionalSettingsContainer {
+  margin: 0 auto;
+}
+.groupDiv2,
+.nUMBEROFTEAMS {
+  color: var(--color-gray-100);
+}
+.frameInputTextArea {
+  width: 100%;
+  text-align: center;
+}
+.frameButton,
+.frameButton1 {
+  width: 100%;
+  height: 100%;
+}
+.frameDiv3 {
+  background-color: var(--color-gray-100);
+  width: 100%;
+  max-width: 390px;
+  height: 126px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 33px 30px 0px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+}
+.frameButton2 {
+  align-self: stretch;
+  text-transform: uppercase;
+}
+.actionButtons {
+  margin: 0 auto;
+}
