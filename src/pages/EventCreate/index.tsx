@@ -4,7 +4,7 @@ import globalStyles from "../../index.module.css";
 
 import CreateEventForm, {
   OnCreateEventPayload,
-} from "../../components/CreateEventForm";
+} from "../../components/EventCreateForm";
 import { useAuth } from "../../hooks/useAuth";
 import { Button, Result, Spin } from "antd";
 
