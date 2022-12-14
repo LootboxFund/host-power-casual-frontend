@@ -79,3 +79,7 @@
   color: #a7a7a7;
   text-align: center;
 }
+.loadingContainer {
+  height: 315px;
+  width: 100%;
+}

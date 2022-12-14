@@ -1,13 +1,18 @@
-import { User } from "firebase/auth";
 import { auth } from "../../api/firebase";
 import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+  User,
+  signInAnonymously as signInAnonymouslyFirebase,
+} from "firebase/auth";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { UserID } from "@wormgraph/helpers";
+import {
+  CreateUserRecordPayload,
+  CreateUserResponse,
+  MutationCreateUserRecordArgs,
+} from "../../api/graphql/generated/types";
+import { useMutation } from "@apollo/client";
+import { CREATE_USER } from "./api.gql";
+import client from "../../api/graphql/client";
 
 interface FrontendUser {
   id: UserID;
@@ -21,6 +26,7 @@ interface FrontendUser {
 
 export interface AuthContextType {
   user: FrontendUser | null | undefined;
+  signInAnonymously: (email?: string) => Promise<FrontendUser>;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -37,6 +43,11 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
     undefined
   );
 
+  const [createUserMutation] = useMutation<
+    { createUserRecord: CreateUserResponse },
+    MutationCreateUserRecordArgs
+  >(CREATE_USER);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -45,7 +56,7 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
       } else {
         setUser(null);
       }
-      // client.resetStore();  // TODO ADD THIS LINE
+      client.resetStore();
     });
 
     return () => {
@@ -53,10 +64,26 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
     };
   }, []);
 
+  const signInAnonymously = async (email?: string): Promise<FrontendUser> => {
+    // Sign in anonymously
+    const { user } = await signInAnonymouslyFirebase(auth);
+
+    // Now create a user record
+    const createUserPayload: CreateUserRecordPayload = {};
+    if (!user.email && !!email) {
+      createUserPayload.email = email;
+    }
+
+    await createUserMutation({ variables: { payload: createUserPayload } });
+
+    return convertUserToUserFE(user);
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        signInAnonymously,
       }}
     >
       {children}
