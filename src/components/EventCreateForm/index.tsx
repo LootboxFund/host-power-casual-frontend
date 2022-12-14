@@ -1,5 +1,8 @@
 import { FunctionComponent, useState } from "react";
 import styles from "./index.module.css";
+import { CreateEventResponseFE, CREATE_EVENT } from "./api.gql";
+import { useMutation } from "@apollo/client";
+import { MutationCreateTournamentArgs } from "../../api/graphql/generated/types";
 
 export interface OnCreateEventPayload {
   nLootbox: number; // number of lootboxes to make
@@ -19,6 +22,11 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
   const [eventName, setEventName] = useState<string | undefined>(undefined);
   const [maxTickets, setMaxTickets] = useState<string | undefined>(undefined);
   const [ticketPrize, setTicketPrize] = useState<string | undefined>(undefined);
+
+  const [createEventMutation, { loading, error, data }] = useMutation<
+    CreateEventResponseFE,
+    MutationCreateTournamentArgs
+  >(CREATE_EVENT);
 
   const incrementTeamCount = () => {
     setTeamCount((cnt) => cnt + 1);
