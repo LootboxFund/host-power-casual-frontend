@@ -3,62 +3,162 @@
   padding: 0px 2rem;
   box-sizing: border-box;
 }
-.frameDiv2 {
-  width: 390px;
-  height: 189px;
-  flex-shrink: 0;
+.b1,
+.frameInput {
+  font-family: var(--font-inter);
+}
+.frameInput {
+  border: 0;
   display: flex;
-  flex-direction: column;
+  font-size: 36px;
+  background-color: var(--color-gray-100);
+  position: absolute;
+  top: 0;
+  left: 68px;
+  border-radius: var(--br-md);
+  flex-direction: row;
+  padding: 7px 83px;
+  box-sizing: border-box;
   align-items: center;
-  justify-content: flex-start;
-  font-size: var(--font-size-base);
-  color: #777;
-}
-.groupDiv1 {
-  position: relative;
-  width: 326px;
-  height: 115px;
-  flex-shrink: 0;
-}
-.additionalSettings {
-  color: var(--color-gray-100);
-  font-style: italic;
-}
-.additionalSettingsContainer {
-  margin: 0 auto;
-}
-.groupDiv2,
-.nUMBEROFTEAMS {
-  color: var(--color-gray-100);
-}
-.frameInputTextArea {
+  justify-content: center;
   width: 100%;
+}
+.b1 {
+  position: relative;
+  font-size: var(--font-size-xl);
+  display: inline-block;
+  color: var(--color-white);
   text-align: center;
 }
 .frameButton,
 .frameButton1 {
+  cursor: pointer;
+  border: 0;
+  background-color: var(--color-gray-200);
+  position: absolute;
+  top: 0;
+  border-radius: var(--br-md);
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+.frameButton {
+  padding: 0 20px;
+  left: 0;
+}
+.frameButton1 {
+  padding: 0 var(--padding-2xs);
+  left: 263px;
+}
+.groupDiv2 {
+  position: absolute;
+  top: 30px;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 58px;
+}
+.nUMBEROFTEAMS {
+  /* position: absolute;
+  top: 0;
+  left: 87px; */
+  display: block;
+  text-align: center;
+}
+.groupDiv1 {
+  position: relative;
+  width: 100%;
+  height: 88px;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+.frameInput1,
+.frameInput2 {
+  border: 0;
+  font-family: var(--font-inter);
+  background-color: var(--color-gray-100);
+  border-radius: var(--br-md);
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+.frameInput1 {
+  display: flex;
+  font-size: var(--font-size-lg);
+  padding: var(--padding-xs) 0px;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: center;
+}
+.frameInput2 {
+  padding: var(--padding-xs) 0px;
+  width: 100%;
+  text-align: center;
+}
+.frameDiv2,
+.frameInput2,
+.frameInput3 {
+  display: flex;
+  justify-content: flex-start;
+  font-size: var(--font-size-lg);
+}
+.frameInput3 {
+  border: 0;
+  font-family: var(--font-inter);
+  background-color: var(--color-gray-100);
+  border-radius: var(--br-md);
+  flex-direction: row;
+  padding: var(--padding-xs);
+  box-sizing: border-box;
+  align-items: flex-start;
+  width: 100%;
+  text-align: center;
+}
+.frameDiv2 {
+  width: 100%;
+  max-width: 315px;
+  height: 315px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+  color: var(--color-gray-300);
+  margin: 0 auto;
+}
+.cREATEEVENT {
+  position: relative;
+  font-size: 24px;
+  display: inline-block;
+  font-family: var(--font-inter);
+  color: var(--color-white);
+  text-align: center;
+}
+.frameButton2 {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-2xs) 72px;
+  background-color: var(--color-teal);
+  align-self: stretch;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
 }
 .frameDiv3 {
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-400);
   width: 100%;
   max-width: 390px;
   height: 126px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  padding: 33px 30px 0px;
+  padding: var(--padding-md) var(--padding-sm) var(--padding-sm);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 0 auto;
-}
-.frameButton2 {
-  align-self: stretch;
-  text-transform: uppercase;
-}
-.actionButtons {
+  gap: var(--gap-md);
   margin: 0 auto;
 }

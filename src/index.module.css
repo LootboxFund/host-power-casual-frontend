@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@700&display=swap");
+
+:root {
+  /* fonts */
+  --font-inter: Inter;
+  --font-fira-sans: "Fira Sans";
+
+  /* font sizes */
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 48px;
+  --font-size-2xl: 200px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-gray-100: #efefef;
+  --color-gray-200: #d8d8d8;
+  --color-gray-300: #777;
+  --color-gray-400: rgba(217, 217, 217, 0);
+  --color-teal: #1cabfc;
+  --color-black: #000;
+
+  /* Gaps */
+  --gap-0: 0px;
+  --gap-md: 10px;
+
+  /* Paddings */
+  --padding-3xs: 9px;
+  --padding-2xs: 15px;
+  --padding-xs: 19px;
+  --padding-sm: 30px;
+  --padding-md: 33px;
+  --padding-lg: 69px;
+  --padding-xl: 79px;
+  --padding-2xl: 95px;
+
+  /* border radiuses */
+  --br-md: 5px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.responsivePageContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.responsivePageContainer::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}

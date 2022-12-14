@@ -9,7 +9,7 @@ const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <RouterProvider router={routes} />;
+        <RouterProvider router={routes} />
       </AuthProvider>
     </ApolloProvider>
   );

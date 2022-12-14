@@ -1,18 +1,18 @@
 import { FunctionComponent } from "react";
-import { Button, Input } from "antd";
 import styles from "./index.module.css";
+import globalStyles from "../../index.module.css";
 
 import CreateEventForm, {
   OnCreateEventPayload,
 } from "../../components/CreateEventForm";
 
-const StartViewDefaultSimple: FunctionComponent = () => {
+const CreateEventPage: FunctionComponent = () => {
   const handleCreateEvent = async (payload: OnCreateEventPayload) => {
     console.log("create event", payload);
   };
 
   return (
-    <div className={"responsivePageContainer " + styles.startViewDefaultSimple}>
+    <div className={globalStyles.responsivePageContainer}>
       <div className={styles.frameDiv}>
         <div className={styles.groupDiv}>
           <i className={styles.fanTicketsPoweredBy}>Fan Tickets Powered By</i>
@@ -24,17 +24,12 @@ const StartViewDefaultSimple: FunctionComponent = () => {
       </div>
       <CreateEventForm onCreateEvent={handleCreateEvent} />
       <div className={styles.frameDiv3}>
-        <Button
-          className={styles.anonymousUserClickToLogin}
-          type="text"
-          size="middle"
-          shape="default"
-        >
-          Anonymous User (click to login)
-        </Button>
+        <button className={styles.xterrangmailcomClickToCh}>
+          0xterran@gmail.com (click to change)
+        </button>
       </div>
     </div>
   );
 };
 
-export default StartViewDefaultSimple;
+export default CreateEventPage;
