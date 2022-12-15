@@ -52,59 +52,50 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
   };
 
   return (
-    <div className={styles.createEventFormContainer}>
-      <div className={styles.frameDiv2}>
-        <div className={styles.groupDiv1}>
-          <div className={styles.groupDiv2}>
-            <input
-              className={styles.frameInput}
-              type="text"
-              placeholder="Number of teams"
-              disabled
-              value={teamCount}
-            />
-            <button className={styles.frameButton} onClick={decrementTeamCount}>
-              <b className={styles.b1}>-</b>
-            </button>
-            <button
-              className={styles.frameButton1}
-              onClick={incrementTeamCount}
-            >
-              <b className={styles.b1}>+</b>
-            </button>
-          </div>
-          <b className={styles.nUMBEROFTEAMS}>NUMBER OF TEAMS</b>
-        </div>
-        <input
-          className={styles.frameInput1}
-          type="text"
-          placeholder="EVENT NAME"
-          onChange={(e) => {
-            setEventName(e.target.value ? e.target.value : undefined);
-          }}
-        />
-        <input
-          className={styles.frameInput2}
-          type="text"
-          placeholder="TICKETS PER TEAM"
-          onChange={(e) => {
-            setMaxTickets(e.target.value ? e.target.value : undefined);
-          }}
-        />
-        <input
-          className={styles.frameInput3}
-          type="text"
-          placeholder="TICKET PRIZE"
-          onChange={(e) => {
-            setTicketPrize(e.target.value ? e.target.value : undefined);
-          }}
-        />
-      </div>
+    <div className={styles.frameDiv2}>
+      <b className={styles.nUMBEROFTEAMS}>NUMBER OF TEAMS</b>
       <div className={styles.frameDiv3}>
-        <button className={styles.frameButton2}>
-          <b className={styles.cREATEEVENT}>CREATE EVENT</b>
+        <button className={styles.frameButton} onClick={decrementTeamCount}>
+          <b className={styles.b1}>-</b>
+        </button>
+        <input
+          className={styles.frameInput}
+          type="text"
+          placeholder="Teams"
+          disabled
+          value={teamCount}
+        />
+        <button className={styles.frameButton1} onClick={incrementTeamCount}>
+          <b className={styles.b1}>+</b>
         </button>
       </div>
+      <input
+        className={styles.frameInput1}
+        type="text"
+        placeholder="EVENT NAME"
+        onChange={(e) => {
+          setEventName(e.target.value ? e.target.value : undefined);
+        }}
+      />
+      <input
+        className={styles.frameInput1}
+        type="text"
+        placeholder="TICKETS PER TEAM"
+        onChange={(e) => {
+          setMaxTickets(e.target.value ? e.target.value : undefined);
+        }}
+      />
+      <input
+        className={styles.frameInput1}
+        type="text"
+        placeholder="TICKET PRIZE"
+        onChange={(e) => {
+          setTicketPrize(e.target.value ? e.target.value : undefined);
+        }}
+      />
+      <button className={styles.frameButton2}>
+        <b className={styles.cREATEEVENT}>CREATE EVENT</b>
+      </button>
     </div>
   );
 };

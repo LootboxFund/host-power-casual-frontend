@@ -1,14 +1,12 @@
+import { Button, Result, Spin } from "antd";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
-import styles from "./index.module.css";
-import globalStyles from "../../index.module.css";
-
 import CreateEventForm, {
   OnCreateEventPayload,
 } from "../../components/EventCreateForm";
 import { useAuth } from "../../hooks/useAuth";
-import { Button, Result, Spin } from "antd";
+import styles from "./index.module.css";
 
-const CreateEventPage: FunctionComponent = () => {
+const StartViewAdditionalSetting: FunctionComponent = () => {
   const { user, signInAnonymously } = useAuth();
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -50,7 +48,7 @@ const CreateEventPage: FunctionComponent = () => {
 
   if (errorMessage) {
     return (
-      <div className={globalStyles.responsivePageContainer}>
+      <div className={styles.startViewAdditionalSetting}>
         <br />
         <br />
         <Result
@@ -68,7 +66,7 @@ const CreateEventPage: FunctionComponent = () => {
   }
 
   return (
-    <div className={globalStyles.responsivePageContainer}>
+    <div className={styles.startViewAdditionalSetting}>
       <div className={styles.frameDiv}>
         <div className={styles.groupDiv}>
           <i className={styles.fanTicketsPoweredBy}>Fan Tickets Powered By</i>
@@ -78,14 +76,14 @@ const CreateEventPage: FunctionComponent = () => {
       <div className={styles.frameDiv1}>
         <b className={styles.b}>🏰</b>
       </div>
-      {loading ? (
-        <div className={styles.loadingContainer}>
-          <Spin size="large" style={{ display: "block", margin: "auto" }} />
-        </div>
-      ) : (
+      {!loading ? (
         <CreateEventForm onCreateEvent={handleCreateEvent} />
+      ) : (
+        <div className={styles.loadingContainer}>
+          <Spin size="default" style={{ display: "block", margin: "auto" }} />
+        </div>
       )}
-      <div className={styles.frameDiv3}>
+      <div className={styles.frameDiv4}>
         {!loading && (
           <button className={styles.xterrangmailcomClickToCh}>
             0xterran@gmail.com (click to change)
@@ -96,4 +94,4 @@ const CreateEventPage: FunctionComponent = () => {
   );
 };
 
-export default CreateEventPage;
+export default StartViewAdditionalSetting;

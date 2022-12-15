@@ -1,12 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 
 // pages
-import CreateEvent from "./pages/EventCreate";
+import EventCreate from "./pages/EventCreate";
+import EventEdit from "./pages/EventEdit";
+import EventShare from "./pages/EventShare";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <CreateEvent />,
+    element: <EventCreate />,
+  },
+  {
+    path: "/edit/:id",
+    element: <EventEdit />,
+  },
+  {
+    path: "/share/:id",
+    element: <EventShare />,
   },
 ]);
 

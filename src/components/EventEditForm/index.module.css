@@ -1,0 +1,170 @@
+.switchToAdvancedMode {
+  position: relative;
+  display: inline-block;
+}
+.frameDiv,
+.frameDiv1 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.frameDiv {
+  background-color: var(--color-teal);
+  flex-direction: column;
+  padding: var(--padding-4xs) var(--padding-3xl);
+  box-sizing: border-box;
+  font-size: var(--font-size-sm);
+}
+.epicBattleEventSimpleSett {
+  position: relative;
+  font-size: var(--font-size-base);
+  display: inline-block;
+  color: var(--color-gray-500);
+}
+.frameDiv3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-lg);
+}
+.frameDiv2,
+.frameDiv5 {
+  align-self: stretch;
+  display: flex;
+}
+.frameDiv2 {
+  background-color: var(--color-gray-700);
+  flex-direction: column;
+  padding: var(--padding-lg);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-black);
+}
+.frameDiv5 {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+.frameDiv4,
+.frameDiv6 {
+  align-self: stretch;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+.frameDiv6 {
+  border-radius: var(--br-sm);
+  background-color: var(--color-gray-100);
+  flex-direction: row;
+  padding: var(--padding-sm) 0;
+  justify-content: center;
+}
+.frameDiv4 {
+  flex-direction: column;
+  padding: var(--padding-md) var(--padding-md) 0;
+  justify-content: flex-start;
+  gap: var(--gap-sm);
+  color: var(--color-gray-300);
+}
+.clickToDepositRewards,
+.teams {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 49px;
+  flex-shrink: 0;
+}
+.clickToDepositRewards {
+  font-size: 12px;
+  font-weight: 300;
+  width: 171px;
+  height: 17px;
+}
+.frameDiv10 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-0);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+.frameDiv12 {
+  flex: 1;
+  border-radius: var(--br-sm);
+  background-color: var(--color-gray-100);
+  padding: var(--padding-sm) 0;
+  box-sizing: border-box;
+}
+.frameDiv11,
+.frameDiv12,
+.frameDiv13,
+.frameDiv21 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.frameDiv13 {
+  border-radius: var(--br-sm);
+  background-color: var(--color-gray-100);
+  padding: var(--padding-2xs) var(--padding-xs);
+  box-sizing: border-box;
+  font-size: var(--font-size-xl);
+  color: var(--color-black);
+}
+.frameDiv11,
+.frameDiv21 {
+  align-self: stretch;
+}
+.frameDiv11 {
+  gap: var(--gap-lg);
+}
+.frameDiv21 {
+  border-radius: var(--br-md);
+  background-color: var(--color-teal);
+  padding: var(--padding-3xs) 0;
+  box-sizing: border-box;
+}
+.cancel {
+  position: relative;
+  font-size: var(--font-size-sm);
+  display: inline-block;
+  color: var(--color-gray-400);
+}
+.eventViewEditSettings,
+.frameDiv20 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.frameDiv20 {
+  align-self: stretch;
+  background-color: var(--color-white);
+  padding: var(--padding-2xl) var(--padding-lg);
+  box-sizing: border-box;
+  justify-content: center;
+  gap: var(--gap-lg);
+  font-size: var(--font-size-2xl);
+}
+.eventViewEditSettingsForm {
+  position: relative;
+  background-color: var(--color-white);
+  width: 100%;
+  justify-content: flex-start;
+  gap: var(--gap-0);
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
