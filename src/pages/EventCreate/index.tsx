@@ -42,7 +42,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     }
   }, [user, signInAnonymously]);
 
-  const handleCreateEvent = async (payload: OnCreateEventPayload) => {
+  const eventCreatedCallback = async (payload: OnCreateEventPayload) => {
     console.log("create event", payload);
   };
 
@@ -77,7 +77,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
         <b className={styles.b}>🏰</b>
       </div>
       {!loading ? (
-        <CreateEventForm onCreateEvent={handleCreateEvent} />
+        <CreateEventForm onCreateEvent={eventCreatedCallback} />
       ) : (
         <div className={styles.loadingContainer}>
           <Spin size="default" style={{ display: "block", margin: "auto" }} />
