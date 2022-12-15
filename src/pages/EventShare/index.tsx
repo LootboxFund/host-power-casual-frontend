@@ -1,27 +1,31 @@
 import { FunctionComponent, useEffect } from "react";
 import styles from "./index.module.css";
-import { useLocation } from "react-router-dom";
-import { ReferralSlug, TournamentID } from "@wormgraph/helpers";
+import { useLocation, useNavigate } from "react-router-dom";
 import { manifest } from "../../manifest";
 import QRCodeComponent from "easyqrcodejs";
+import { EventFE, ReferralFE } from "../../hooks/useEventCreate";
 
 const QR_CODE_ELEMENT_ID = "qrcode";
 
-export interface EventShareState {
-  eventID: TournamentID;
-  referralSlug: ReferralSlug;
+export interface NavigationState {
+  event?: EventFE;
+  referral?: ReferralFE;
 }
 const EventShare: FunctionComponent = () => {
-  const { state } = useLocation();
-  const { eventID, referralSlug } = state as EventShareState;
-  const inviteLink = referralSlug
-    ? `${manifest.microfrontends.webflow.referral}?r=${referralSlug}`
+  const navigate = useNavigate();
+
+  const { state }: { state: NavigationState } = useLocation();
+
+  if (!state.event || !state.referral) {
+    throw new Error("Invalid state");
+  }
+
+  const inviteLink = state.referral
+    ? `${manifest.microfrontends.webflow.referral}?r=${state.referral.slug}`
     : undefined;
   const inviteLinkShort = inviteLink
     ? inviteLink.replace("https://", "")
     : undefined;
-
-  console.log("EventShare", { eventID, referralSlug });
 
   useEffect(() => {
     if (inviteLink) {
@@ -51,6 +55,10 @@ const EventShare: FunctionComponent = () => {
     }
   }, [inviteLink]);
 
+  const navigateToEdit = () => {
+    navigate(`/edit`);
+  };
+
   return (
     <div className={styles.eventViewScanQRCodeResp}>
       <div className={styles.frameDiv}>
@@ -60,7 +68,7 @@ const EventShare: FunctionComponent = () => {
         </div>
       </div>
       <div className={styles.frameDiv1}>
-        <button className={styles.frameButton}>
+        <button className={styles.frameButton} onClick={navigateToEdit}>
           <b className={styles.b}>🏰</b>
           <i className={styles.epicBattleEventClickToEd}>
             Epic Battle Event (click to edit)

@@ -1,24 +1,6 @@
-import { FunctionComponent, useMemo, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import styles from "./index.module.css";
-import {
-  BulkCreateLootboxResponseFE,
-  BULK_CREATE_LOOTBOX,
-  CreateEventResponseFE,
-  CREATE_EVENT,
-  CREATE_REFERRAL,
-  CreateReferralResponseFE,
-} from "./api.gql";
-import { useMutation } from "@apollo/client";
-import {
-  MutationBulkCreateLootboxArgs,
-  MutationCreateReferralArgs,
-  MutationCreateTournamentArgs,
-  ReferralType,
-} from "../../api/graphql/generated/types";
-import { Spin } from "antd";
-import { TournamentID } from "@wormgraph/helpers";
-import { useNavigate } from "react-router-dom";
-import { EventShareState } from "../../pages/EventShare";
+import { Spin, Modal } from "antd";
 
 const LOOTBOX_LIMIT = 30;
 
@@ -26,7 +8,7 @@ export interface OnCreateEventPayload {
   nLootbox: number; // number of lootboxes to make
   eventName?: string;
   lootboxMaxTickets?: number;
-  eventTicketPrize?: string;
+  lootboxTicketPrize?: string;
 }
 
 interface CreateEventFormProps {
@@ -36,30 +18,12 @@ interface CreateEventFormProps {
 const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
   props: CreateEventFormProps
 ) => {
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [teamCount, setTeamCount] = useState(1);
   const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
   const [eventName, setEventName] = useState<string | undefined>(undefined);
-  const [maxTickets, setMaxTickets] = useState<string | undefined>(undefined);
+  const [maxTickets, setMaxTickets] = useState<number | undefined>(undefined);
   const [ticketPrize, setTicketPrize] = useState<string | undefined>(undefined);
-  const loading = false;
-  const [createEventMutation, { loading: loadingEventCreate, error, data }] =
-    useMutation<CreateEventResponseFE, MutationCreateTournamentArgs>(
-      CREATE_EVENT
-    );
-
-  const [bulkCreateLootboxMutation, { loading: loadingBulkCreate }] =
-    useMutation<BulkCreateLootboxResponseFE, MutationBulkCreateLootboxArgs>(
-      BULK_CREATE_LOOTBOX
-    );
-
-  const [createReferralMutation, { loading: loadingReferralCreate }] =
-    useMutation<CreateReferralResponseFE, MutationCreateReferralArgs>(
-      CREATE_REFERRAL
-    );
 
   const incrementTeamCount = () => {
     setTeamCount((cnt) => cnt + 1);
@@ -75,100 +39,36 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
     });
   };
 
-  /**
-   * This thing just calls 3 mutations:
-   * - create event
-   * - bulk create lootboxes
-   * - creates a referral code
-   */
   const onCreateEvent = async () => {
     if (loading) {
       return;
     }
 
     if (teamCount > LOOTBOX_LIMIT) {
-      setErrorMessage(
-        `You can only create up to ${LOOTBOX_LIMIT} lootboxes at a time`
-      );
+      Modal.error({
+        title: "Too many Teams",
+        content: `You can only create up to ${LOOTBOX_LIMIT} lootboxes at a time`,
+      });
       return;
     }
 
-    setErrorMessage(undefined);
-    let createdEventID: TournamentID;
+    const payload: OnCreateEventPayload = {
+      nLootbox: teamCount,
+      eventName: eventName,
+      lootboxMaxTickets: maxTickets,
+      lootboxTicketPrize: ticketPrize,
+    };
+    setLoading(true);
     try {
-      // await props.onCreateEvent(payload);
-      const eventResponse = await createEventMutation({
-        variables: {
-          payload: {
-            title: eventName,
-          },
-        },
-      });
-
-      console.log("Created event", eventResponse);
-
-      if (
-        eventResponse?.data?.createTournament?.__typename ===
-        "CreateTournamentResponseSuccess"
-      ) {
-        createdEventID = eventResponse.data.createTournament.tournament.id;
-      } else {
-        throw new Error("An error occured!");
-      }
+      await props.onCreateEvent(payload);
     } catch (err: any) {
-      setErrorMessage(err?.message || "An error occured");
+      Modal.error({
+        title: "An error occured",
+        content: "Sorry! Something went wrong. Please try again later.",
+      });
       return;
-    }
-
-    try {
-      const bulkCreateLootboxPayload = Array.from({ length: teamCount }).map(
-        (_, i) => ({
-          tournamentID: createdEventID,
-          maxTickets: maxTickets ? parseInt(maxTickets) : undefined,
-          nftBountyValue: ticketPrize,
-        })
-      );
-      const referralResponse = await createReferralMutation({
-        variables: {
-          payload: {
-            type: ReferralType.Genesis,
-            tournamentId: createdEventID,
-          },
-        },
-      });
-
-      if (
-        !referralResponse?.data?.createReferral ||
-        referralResponse.data.createReferral.__typename === "ResponseError"
-      ) {
-        throw new Error("An error occured!");
-      }
-
-      const referralSlug = referralResponse.data.createReferral.referral.slug;
-
-      console.log("Created referral", referralSlug);
-
-      // This takes a little while... so just run it async
-      bulkCreateLootboxMutation({
-        variables: {
-          payload: {
-            lootboxes: bulkCreateLootboxPayload,
-          },
-        },
-      });
-
-      // navigate to the eventShare page
-      // window.location.href = `/eventShare?referralSlug=${referralSlug}`;
-      const state: EventShareState = {
-        eventID: createdEventID,
-        referralSlug: referralSlug,
-      };
-      navigate(`/share/${referralSlug}`, {
-        state: {},
-      });
-    } catch (err: any) {
-      setErrorMessage(err?.message || "An error occured");
-      return;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -181,7 +81,7 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
         </button>
         <input
           className={styles.frameInput}
-          type="text"
+          type="number"
           placeholder="Teams"
           disabled
           value={teamCount}
@@ -200,10 +100,12 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
       />
       <input
         className={styles.frameInput1}
-        type="text"
+        type="number"
         placeholder="TICKETS PER TEAM"
         onChange={(e) => {
-          setMaxTickets(e.target.value ? e.target.value : undefined);
+          setMaxTickets(
+            e.target.valueAsNumber ? e.target.valueAsNumber : undefined
+          );
         }}
       />
       <input

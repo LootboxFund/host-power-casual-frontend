@@ -4,9 +4,13 @@ import CreateEventForm, {
   OnCreateEventPayload,
 } from "../../components/EventCreateForm";
 import { useAuth } from "../../hooks/useAuth";
+import useEventCreate, { CreateEventPayload } from "../../hooks/useEventCreate";
 import styles from "./index.module.css";
+import { useNavigate } from "react-router-dom";
 
 const StartViewAdditionalSetting: FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { createEvent } = useEventCreate();
   const { user, signInAnonymously } = useAuth();
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
@@ -42,8 +46,20 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     }
   }, [user, signInAnonymously]);
 
-  const eventCreatedCallback = async (payload: OnCreateEventPayload) => {
-    console.log("create event", payload);
+  const onEventCreate = async (
+    payload: OnCreateEventPayload
+  ): Promise<void> => {
+    const serviceRequest: CreateEventPayload = {
+      lootboxCount: payload.nLootbox,
+      title: payload.eventName,
+      lootboxMaxTickets: payload.lootboxMaxTickets,
+      nftBountyValue: payload.lootboxTicketPrize,
+    };
+    const { event, referral } = await createEvent(serviceRequest);
+
+    navigate("/share", { state: { event, referral } });
+
+    return;
   };
 
   if (errorMessage) {
@@ -77,7 +93,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
         <b className={styles.b}>🏰</b>
       </div>
       {!loading ? (
-        <CreateEventForm onCreateEvent={eventCreatedCallback} />
+        <CreateEventForm onCreateEvent={onEventCreate} />
       ) : (
         <div className={styles.loadingContainer}>
           <Spin size="default" style={{ display: "block", margin: "auto" }} />

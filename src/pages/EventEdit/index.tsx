@@ -1,6 +1,13 @@
+import { ReferralSlug, TournamentID } from "@wormgraph/helpers";
 import { FunctionComponent } from "react";
 import EventEditForm from "../../components/EventEditForm";
+import { EventFE, ReferralFE } from "../../hooks/useEventCreate";
 import styles from "./index.module.css";
+
+export interface EventEditNavigationState {
+  event: EventFE;
+  referral: ReferralFE;
+}
 
 const EventEdit: FunctionComponent = () => {
   return (
