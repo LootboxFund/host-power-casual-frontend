@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { TournamentID } from "@wormgraph/helpers";
+import { ReferralID, ReferralSlug, TournamentID } from "@wormgraph/helpers";
 
 export interface CreateEventResponseFE {
   createTournament:
@@ -86,8 +86,8 @@ export interface CreateReferralResponseFE {
   createReferral:
     | {
         referral: {
-          id: string;
-          slug: string;
+          id: ReferralID;
+          slug: ReferralSlug;
         };
         __typename: "CreateReferralResponseSuccess";
       }

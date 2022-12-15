@@ -14,6 +14,7 @@
     "@wormgraph/helpers": "^0.7.5-demo-j",
     "@wormgraph/manifest": "^0.7.4-prod-1",
     "antd": "^5.0.7",
+    "easyqrcodejs": "^4.4.13",
     "firebase": "^9.15.0",
     "graphql": "^16.6.0",
     "react": "^18.2.0",

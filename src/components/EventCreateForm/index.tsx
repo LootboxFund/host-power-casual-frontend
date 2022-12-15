@@ -18,6 +18,7 @@ import {
 import { Spin } from "antd";
 import { TournamentID } from "@wormgraph/helpers";
 import { useNavigate } from "react-router-dom";
+import { EventShareState } from "../../pages/EventShare";
 
 const LOOTBOX_LIMIT = 30;
 
@@ -158,8 +159,12 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
 
       // navigate to the eventShare page
       // window.location.href = `/eventShare?referralSlug=${referralSlug}`;
+      const state: EventShareState = {
+        eventID: createdEventID,
+        referralSlug: referralSlug,
+      };
       navigate(`/share/${referralSlug}`, {
-        state: { eventID: createdEventID, referralSlug: referralSlug },
+        state: {},
       });
     } catch (err: any) {
       setErrorMessage(err?.message || "An error occured");
