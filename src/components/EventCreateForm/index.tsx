@@ -1,6 +1,7 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
-import { Spin, Modal } from "antd";
+import { Spin, Modal, message } from "antd";
+import { MessageType } from "antd/es/message/interface";
 
 const LOOTBOX_LIMIT = 30;
 
@@ -59,17 +60,17 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
       lootboxTicketPrize: ticketPrize,
     };
     setLoading(true);
+    const loadingMessage = message.loading("Creating event...", 0);
     try {
       await props.onCreateEvent(payload);
+      message.success("Event created!", 2);
     } catch (err: any) {
-      Modal.error({
-        title: "An error occured",
-        content: "Sorry! Something went wrong. Please try again later.",
-      });
-      return;
+      message.error("An error occured", 2);
     } finally {
       setLoading(false);
+      loadingMessage();
     }
+    return;
   };
 
   return (
@@ -121,7 +122,7 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
         className={styles.frameButton2}
         onClick={onCreateEvent}
       >
-        <b className={styles.cREATEEVENT}>{loading && <Spin />} CREATE EVENT</b>
+        <b className={styles.cREATEEVENT}>CREATE EVENT</b>
       </button>
     </div>
   );

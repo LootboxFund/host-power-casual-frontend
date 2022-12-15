@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { manifest } from "../../manifest";
 import QRCodeComponent from "easyqrcodejs";
 import { EventFE, ReferralFE } from "../../hooks/useEventCreate";
+import { message } from "antd";
 
 const QR_CODE_ELEMENT_ID = "qrcode";
 
@@ -20,12 +21,8 @@ const EventShare: FunctionComponent = () => {
     throw new Error("Invalid state");
   }
 
-  const inviteLink = state.referral
-    ? `${manifest.microfrontends.webflow.referral}?r=${state.referral.slug}`
-    : undefined;
-  const inviteLinkShort = inviteLink
-    ? inviteLink.replace("https://", "")
-    : undefined;
+  const inviteLink = `${manifest.microfrontends.webflow.referral}?r=${state.referral.slug}`;
+  const inviteLinkShort = inviteLink.replace("https://", "");
 
   useEffect(() => {
     if (inviteLink) {
@@ -59,6 +56,11 @@ const EventShare: FunctionComponent = () => {
     navigate(`/edit`);
   };
 
+  const copyInviteLink = () => {
+    navigator.clipboard.writeText(inviteLink);
+    message.success("Copied to clipboard");
+  };
+
   return (
     <div className={styles.eventViewScanQRCodeResp}>
       <div className={styles.frameDiv}>
@@ -83,7 +85,7 @@ const EventShare: FunctionComponent = () => {
         <div className={styles.frameDiv4}>
           <b className={styles.scanForFanTickets}>🔒 {inviteLinkShort}</b>
         </div>
-        <button className={styles.frameButton1}>
+        <button className={styles.frameButton1} onClick={copyInviteLink}>
           <b className={styles.copyLink}>Copy Link</b>
         </button>
       </div>
