@@ -1,16 +1,13 @@
-import { FunctionComponent, useEffect, useMemo, useState } from "react";
+import { FunctionComponent, useMemo, useState } from "react";
 import styles from "./index.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { manifest } from "../../manifest";
-import QRCodeComponent from "easyqrcodejs";
-import { ReferralFE } from "../../lib/types";
+import { FrontendUser, ReferralFE } from "../../lib/types";
 import { message, Modal } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
 import { useAuth } from "../../hooks/useAuth";
 import EventQRCode from "../../components/EventQRCode";
 import LoginForm from "../../components/LoginForm";
-
-const QR_CODE_ELEMENT_ID = "qrcode";
 
 export interface NavigationState {
   referral?: ReferralFE;
@@ -19,6 +16,7 @@ export interface NavigationState {
 const EventShare: FunctionComponent = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  console.log("user", user);
   const { id: eventID } = useParams();
   const { state }: { state: NavigationState } = useLocation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -27,34 +25,6 @@ const EventShare: FunctionComponent = () => {
     return `${manifest.microfrontends.webflow.referral}?r=${state?.referral?.slug}`;
   }, [state]);
   const inviteLinkShort = inviteLink.replace("https://", "");
-
-  useEffect(() => {
-    if (inviteLink) {
-      const options_object = {
-        // ====== Basic
-        text: inviteLink,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCodeComponent.CorrectLevel.H, // L, M, Q, <H></H>
-        quietZone: 12,
-        /*
-          title: 'QR Title', // content
-
-          titleColor: "#004284", // color. default is "#000"
-          titleBackgroundColor: "#fff", // background color. default is "#fff"
-          titleHeight: 70, // height, including subTitle. default is 0
-          titleTop: 25, // draws y coordinates. default is 30
-      */
-      };
-      const el = document.getElementById(QR_CODE_ELEMENT_ID);
-      if (el) {
-        if (el.firstChild) {
-          el.removeChild(el.firstChild);
-        }
-        new QRCodeComponent(el, options_object);
-      }
-    }
-  }, [inviteLink]);
 
   const navigateToEdit = () => {
     const navState: EventEditNavigationState = {
@@ -80,8 +50,9 @@ const EventShare: FunctionComponent = () => {
     }
   };
 
-  const handleLogin = (email: string, password: string) => {
-    console.log("login", email);
+  const loginCallback = (user: FrontendUser) => {
+    closeAuthModal();
+    message.success(`Welcome ${user.username}!`);
   };
 
   if (!state.referral) {
@@ -143,8 +114,9 @@ const EventShare: FunctionComponent = () => {
         onCancel={closeAuthModal}
         bodyStyle={{ overflowX: "scroll" }}
         okButtonProps={{ style: { display: "none" } }}
+        destroyOnClose={true}
       >
-        <LoginForm onLogin={handleLogin} />
+        <LoginForm onLoginCallback={loginCallback} />
       </Modal>
     </div>
   );

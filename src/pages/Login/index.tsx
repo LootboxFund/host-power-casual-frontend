@@ -1,11 +1,12 @@
 import { FunctionComponent } from "react";
 import LoginForm from "../../components/LoginForm";
+import { FrontendUser } from "../../lib/types";
 
 const LoginPage: FunctionComponent = () => {
-  const handleLogin = (email: string, password: string) => {};
+  const loginCallback = (user: FrontendUser) => {};
   return (
     <div>
-      <LoginForm onLogin={handleLogin} />
+      <LoginForm onLoginCallback={loginCallback} />
     </div>
   );
 };

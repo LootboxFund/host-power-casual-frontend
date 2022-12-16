@@ -18,6 +18,7 @@ import RequireAuth from "./components/RequireAuth";
 const router = createBrowserRouter([
   {
     path: "/",
+    // NOTE: this does not need auth guard - anonymous users will get created
     element: <EventCreate />,
   },
   {

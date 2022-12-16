@@ -3,6 +3,7 @@ import {
   ReferralID,
   ReferralSlug,
   TournamentID,
+  UserID,
 } from "@wormgraph/helpers";
 
 export interface EventFE {
@@ -20,4 +21,14 @@ export interface LootboxFE {
   name: string;
   nftBountyValue: string;
   maxTickets: number;
+}
+
+export interface FrontendUser {
+  id: UserID;
+  email: string | null;
+  phone: string | null;
+  isEmailVerified: boolean;
+  username: string | null;
+  avatar: string | null;
+  isAnonymous: boolean;
 }

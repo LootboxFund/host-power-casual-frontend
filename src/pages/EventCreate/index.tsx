@@ -7,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import useEventCreate, { CreateEventPayload } from "../../hooks/useEventCreate";
 import styles from "./index.module.css";
 import { useNavigate } from "react-router-dom";
+import LoginForm from "../../components/LoginForm";
 
 const StartViewAdditionalSetting: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -18,11 +19,11 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     undefined
   );
 
-  const hasRunInit = useRef(false);
+  // const hasRunInit = useRef(false);
   useEffect(() => {
-    if (hasRunInit.current || !signInAnonymously) {
-      return;
-    }
+    // if (hasRunInit.current || !signInAnonymously) {
+    //   return;
+    // }
 
     if (user === undefined) {
       return;
@@ -35,12 +36,12 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
         .catch((err) => {
           setErrorMessage("An error occured");
         });
-      hasRunInit.current = true;
+      // hasRunInit.current = true;
       setLoading(false);
       return;
     } else {
       // END STATE - user logged in already
-      hasRunInit.current = true;
+      // hasRunInit.current = true;
       setLoading(false);
       console.log("user", user.id);
       return;
@@ -90,6 +91,14 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     );
   }
 
+  const loginCallback = () => {
+    closeAuthModal();
+  };
+
+  const signoutCallback = () => {
+    closeAuthModal();
+  };
+
   return (
     <div className={styles.startViewAdditionalSetting}>
       <div className={styles.frameDiv}>
@@ -116,8 +125,12 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
         onCancel={closeAuthModal}
         bodyStyle={{ overflowX: "scroll" }}
         okButtonProps={{ style: { display: "none" } }}
+        destroyOnClose={true}
       >
-        <div>Login</div>
+        <LoginForm
+          onLoginCallback={loginCallback}
+          onSignOutCallback={signoutCallback}
+        />
       </Modal>
     </div>
   );

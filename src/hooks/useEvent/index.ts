@@ -14,6 +14,7 @@ interface UseEventOutput {
   event?: EventFE;
   loading: boolean;
   refetch: () => void;
+  error?: Error;
 }
 
 const useEvent = (props: UseEventProps): UseEventOutput => {
@@ -36,10 +37,18 @@ const useEvent = (props: UseEventProps): UseEventOutput => {
         }
       : undefined;
 
+  const parsedError = error
+    ? new Error(error.message)
+    : data?.viewTournamentAsOrganizer &&
+      "error" in data.viewTournamentAsOrganizer
+    ? new Error(data.viewTournamentAsOrganizer.error.message)
+    : undefined;
+
   return {
     event,
     loading: loading,
     refetch,
+    error: parsedError,
   };
 };
 

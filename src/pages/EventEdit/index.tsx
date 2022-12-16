@@ -27,6 +27,7 @@ const EventEdit: FunctionComponent = () => {
     event,
     loading: loadingEvent,
     refetch: refetchEvent,
+    error,
   } = useEvent({
     eventID: eventID as TournamentID,
   });
@@ -98,17 +99,20 @@ const EventEdit: FunctionComponent = () => {
           onFormCancel={navigateBack}
           onOpenTeamSettings={handleOpenTeamSettings}
         />
-      ) : (
+      ) : !!error ? (
         <div className={styles.loadingContainer}>
           <Result
-            status="info"
-            title="Event not found"
-            subTitle={
-              <Button onClick={navigateToCreate}>Create a new one?</Button>
+            status="error"
+            title="An error occured"
+            subTitle={error?.message || "We can't load that event right now..."}
+            extra={
+              <Button type="primary" onClick={navigateToCreate}>
+                Create a new event?
+              </Button>
             }
           ></Result>
         </div>
-      )}
+      ) : null}
 
       <Modal
         open={isEditLootboxModalOpen}
