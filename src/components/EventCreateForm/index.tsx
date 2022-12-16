@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import styles from "./index.module.css";
 import { Modal, message } from "antd";
+import { useAuth } from "../../hooks/useAuth";
 
 const LOOTBOX_LIMIT = 30;
 
@@ -19,6 +20,7 @@ interface CreateEventFormProps {
 const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
   props: CreateEventFormProps
 ) => {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [teamCount, setTeamCount] = useState(1);
   const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
@@ -133,7 +135,11 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
           className={styles.xterrangmailcomClickToCh}
           onClick={props.onOpenAuthModal}
         >
-          0xterran@gmail.com (click to change)
+          {user?.isAnonymous
+            ? "Unverified User (click to login)"
+            : user?.email
+            ? `${user.email} (click to change)`
+            : "Click to login"}
         </button>
       </div>
     </div>

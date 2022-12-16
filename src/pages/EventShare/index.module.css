@@ -16,6 +16,16 @@
   height: 19px;
   flex-shrink: 0;
 }
+.frameDivUnverified {
+  align-self: stretch;
+  background-color: var(--color-yellow);
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-4xs) var(--padding-md);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
 .frameDiv {
   align-self: stretch;
   background-color: var(--color-teal);
@@ -178,7 +188,9 @@
   left: 0;
   right: 0;
 }
-
 .whitespace {
   padding-bottom: 190px;
+}
+.warningText {
+  color: var(--color-red);
 }

@@ -29,6 +29,8 @@ body {
   --color-gray-700: #333;
   --color-teal: #1cabfc;
   --color-black: #000;
+  --color-yellow: #ffe81c;
+  --color-red: #da0000;
 
   /* Gaps */
   --gap-0: 0px;

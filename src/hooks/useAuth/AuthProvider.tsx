@@ -29,6 +29,11 @@ interface FrontendUser {
 }
 
 export interface AuthContextType {
+  /**
+   * user = undefined -> unset (loading)
+   * user = null -> unauthenticated
+   * user = USER -> authenticated
+   */
   user: FrontendUser | null | undefined;
   signInAnonymously: (email?: string) => Promise<FrontendUser>;
 }
@@ -38,11 +43,6 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 interface AuthProviderProps {}
 
 const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
-  /**
-   * user = undefined -> unset (loading)
-   * user = null -> unauthenticated
-   * user = USER -> authenticated
-   */
   const [user, setUser] = useState<FrontendUser | null | undefined | null>(
     undefined
   );
@@ -86,6 +86,16 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
 
     return convertUserToUserFE(user);
   };
+
+  // const linkCredentials = async (credential: EmailAuthCredential | PhoneAuthCredential): Promise<User> => {
+  //   const _user = auth.currentUser
+  //   if (!_user) {
+  //     throw new Error('No user logged in')
+  //   }
+  //   await linkWithCredential(_user, credential)
+
+  //   return _user
+  // }
 
   return (
     <AuthContext.Provider
