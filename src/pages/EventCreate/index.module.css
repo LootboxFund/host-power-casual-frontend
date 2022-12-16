@@ -36,7 +36,7 @@
   background-color: var(--color-white);
   display: flex;
   flex-direction: row;
-  padding: var(--padding-3xl) var(--padding-4xl);
+  padding: var(--padding-lg) var(--padding-lg);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -148,29 +148,6 @@
   gap: var(--gap-md);
   font-size: var(--font-size-lg);
   color: var(--color-gray-400);
-}
-.xterrangmailcomClickToCh {
-  cursor: pointer;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  position: relative;
-  font-size: var(--font-size-base);
-  display: inline-block;
-  font-style: italic;
-  font-family: var(--font-inter);
-  color: var(--color-gray-300);
-  text-align: center;
-}
-.frameDiv4 {
-  align-self: stretch;
-  background-color: var(--color-white);
-  display: flex;
-  flex-direction: column;
-  padding: 0 var(--padding-md) var(--padding-lg);
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
 }
 .startViewAdditionalSetting {
   position: relative;

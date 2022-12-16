@@ -16,8 +16,6 @@ interface UseEventOutput {
 }
 
 const useEvent = (props: UseEventProps): UseEventOutput => {
-  console.log("useEvent", props.eventID);
-
   const { data, loading, error } = useQuery<
     ViewTournamentAsOrganizerResponseFE,
     QueryViewTournamentAsOrganizerArgs
@@ -37,6 +35,7 @@ const useEvent = (props: UseEventProps): UseEventOutput => {
         }
       : undefined;
 
+  console.log("YO", event, loading, error);
   return {
     event,
     loading: loading,

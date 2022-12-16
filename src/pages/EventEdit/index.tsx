@@ -1,24 +1,28 @@
-import { FunctionComponent } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FunctionComponent, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import EventEditForm, {
   OnEditEventFormPayload,
 } from "../../components/EventEditForm";
-import { EventFE, ReferralFE } from "../../lib/types";
-import useEventEdit, { EditEventPayload } from "../../hooks/useEventEdit";
+import { LootboxFE, ReferralFE } from "../../lib/types";
+import useEventEdit from "../../hooks/useEventEdit";
 import styles from "./index.module.css";
 import useEvent from "../../hooks/useEvent";
 import { TournamentID } from "@wormgraph/helpers";
-import { Spin } from "antd";
+import { Button, Result, Spin, Modal } from "antd";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
+import LootboxEditForm from "../../components/LootboxEditForm";
 
 export interface EventEditNavigationState {
   referral?: ReferralFE;
 }
 
 const EventEdit: FunctionComponent = () => {
+  const [selectedLootbox, setSelectedLootbox] = useState<LootboxFE | null>(
+    null
+  );
+  const [isEditLootboxModalOpen, setIsEditLootboxModalOpen] = useState(false);
   const navigate = useNavigate();
   let { id: eventID } = useParams();
-  console.log("event id", eventID);
   const { event, loading: loadingEvent } = useEvent({
     eventID: eventID as TournamentID,
   });
@@ -26,13 +30,14 @@ const EventEdit: FunctionComponent = () => {
     eventID: eventID as TournamentID,
   });
 
-  console.log("event", event);
-  console.log("lootboxes", lootboxes);
-
   const { editEvent } = useEventEdit();
 
   const navigateBack = () => {
     navigate(-1);
+  };
+
+  const navigateToCreate = () => {
+    navigate("/");
   };
 
   const handleEditEvent = async (payload: OnEditEventFormPayload) => {
@@ -42,6 +47,16 @@ const EventEdit: FunctionComponent = () => {
 
     // TODO: REFETCH DATA
     return;
+  };
+
+  const handleOpenTeamSettings = (lootbox: LootboxFE) => {
+    setSelectedLootbox(lootbox);
+    setIsEditLootboxModalOpen(true);
+  };
+
+  const closeTeamSettings = () => {
+    setSelectedLootbox(null);
+    setIsEditLootboxModalOpen(false);
   };
 
   return (
@@ -59,13 +74,40 @@ const EventEdit: FunctionComponent = () => {
           </i>
         </div>
       </div>
-      {!loadingEvent ? (
-        <EventEditForm onEdit={handleEditEvent} onFormCancel={navigateBack} />
-      ) : (
+      {loadingEvent ? (
         <div className={styles.loadingContainer}>
-          <Spin size="default" style={{ display: "block", margin: "auto" }} />
+          <Result
+            icon={
+              <Spin size="large" style={{ display: "block", margin: "auto" }} />
+            }
+          />
         </div>
+      ) : !!event ? (
+        <EventEditForm
+          event={event}
+          lootboxes={lootboxes}
+          onEdit={handleEditEvent}
+          onFormCancel={navigateBack}
+          onOpenTeamSettings={handleOpenTeamSettings}
+        />
+      ) : (
+        <Result
+          status="info"
+          title="Event not found"
+          subTitle={
+            <Button onClick={navigateToCreate}>Create a new one?</Button>
+          }
+        ></Result>
       )}
+
+      <Modal
+        open={isEditLootboxModalOpen}
+        onCancel={closeTeamSettings}
+        bodyStyle={{ overflowX: "scroll" }}
+        okButtonProps={{ style: { display: "none" } }}
+      >
+        {selectedLootbox && <LootboxEditForm lootbox={selectedLootbox} />}
+      </Modal>
     </div>
   );
 };

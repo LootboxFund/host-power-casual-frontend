@@ -12,6 +12,7 @@ export interface OnCreateEventPayload {
 }
 
 interface CreateEventFormProps {
+  onOpenAuthModal: () => void;
   onCreateEvent: (payload: OnCreateEventPayload) => Promise<void>;
 }
 
@@ -116,13 +117,25 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
           setTicketPrize(e.target.value ? e.target.value : undefined);
         }}
       />
-      <button
-        disabled={loading}
-        className={styles.frameButton2}
-        onClick={onCreateEvent}
-      >
-        <b className={styles.cREATEEVENT}>CREATE EVENT</b>
-      </button>
+
+      <div className={styles.whitespace} />
+
+      <div className={styles.floatingButtonContainer}>
+        <button
+          disabled={loading}
+          className={styles.frameButton2}
+          onClick={onCreateEvent}
+        >
+          <b className={styles.cREATEEVENT}>CREATE EVENT</b>
+        </button>
+
+        <button
+          className={styles.xterrangmailcomClickToCh}
+          onClick={props.onOpenAuthModal}
+        >
+          0xterran@gmail.com (click to change)
+        </button>
+      </div>
     </div>
   );
 };

@@ -96,7 +96,7 @@
 }
 .copyLink {
   position: relative;
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   display: inline-block;
   font-family: var(--font-inter);
   color: var(--color-white);
@@ -113,15 +113,16 @@
 .frameButton1 {
   cursor: pointer;
   border: 0;
-  padding: var(--padding-3xs) 0;
+  padding: var(--padding-2xs) var(--padding-sm);
   background-color: var(--color-teal);
   border-radius: var(--br-md);
   flex-direction: row;
+  margin-bottom: var(--padding-xs);
 }
 .frameDiv3 {
   background-color: var(--color-white);
   flex-direction: column;
-  padding: var(--padding-2xl) var(--padding-lg);
+  /* padding: var(--padding-2xl) var(--padding-lg); */
   gap: var(--gap-lg);
   font-size: var(--font-size-base);
   color: #5e5e5e;
@@ -148,7 +149,7 @@
 .frameDiv5 {
   align-self: stretch;
   background-color: var(--color-white);
-  padding: 0 var(--padding-lg) var(--padding-2xl);
+  /* padding: 0 var(--padding-lg) var(--padding-2xl); */
   box-sizing: border-box;
   justify-content: center;
 }
@@ -162,4 +163,22 @@
   font-size: var(--font-size-sm);
   color: var(--color-white);
   font-family: var(--font-inter);
+}
+.floatingButtonContainer {
+  align-self: stretch;
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-sm) var(--padding-sm);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.whitespace {
+  padding-bottom: 190px;
 }

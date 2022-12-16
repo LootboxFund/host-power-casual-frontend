@@ -21,7 +21,7 @@
   font-size: var(--font-size-base);
   display: inline-block;
   color: var(--color-gray-500);
-  text-align: start;
+  text-align: center;
 }
 .frameDiv3 {
   display: flex;
@@ -29,6 +29,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--gap-lg);
+  margin: auto;
 }
 .eventViewEditSettings,
 .frameDiv2 {
@@ -44,6 +45,7 @@
   justify-content: center;
   font-size: var(--font-size-lg);
   color: var(--color-black);
+  text-align: center;
 }
 .eventViewEditSettings {
   position: relative;

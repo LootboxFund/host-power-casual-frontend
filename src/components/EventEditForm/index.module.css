@@ -71,11 +71,16 @@
   border: 0;
   font-family: var(--font-inter);
   font-size: var(--font-size-lg);
+  color: var(--color-gray-500);
   background-color: var(--color-gray-100);
   border-radius: var(--br-sm);
   flex-direction: row;
   padding: var(--padding-sm) 0;
   justify-content: center;
+}
+.frameInput,
+.maxTix::before {
+  content: "Team Tickets";
 }
 .frameDiv3 {
   flex-direction: column;
@@ -121,6 +126,7 @@
   border: 0;
   display: flex;
   font-size: var(--font-size-lg);
+  color: var(--color-gray-500);
   background-color: var(--color-gray-100);
   flex: 1;
   border-radius: var(--br-sm);
@@ -214,10 +220,14 @@
 .frameDiv9 {
   align-self: stretch;
   background-color: var(--color-white);
-  padding: var(--padding-lg) var(--padding-lg);
+  padding: var(--padding-sm) var(--padding-sm);
   box-sizing: border-box;
   justify-content: center;
   gap: var(--gap-lg);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .eventViewEditSettings {
   position: relative;
@@ -230,209 +240,26 @@
   color: var(--color-gray-500);
   font-family: var(--font-inter);
 }
-
-/* .switchToAdvancedMode {
-  position: relative;
-  display: inline-block;
+.frameInput,
+.maxTixPrefix::before {
+  content: "Max Tickets";
 }
-.frameDiv,
-.frameDiv1 {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.frameDiv {
-  background-color: var(--color-teal);
-  flex-direction: column;
-  padding: var(--padding-4xs) var(--padding-3xl);
-  box-sizing: border-box;
-  font-size: var(--font-size-sm);
-}
-.epicBattleEventSimpleSett {
-  position: relative;
-  font-size: var(--font-size-base);
-  display: inline-block;
-  color: var(--color-gray-500);
-}
-.frameDiv3 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gap-lg);
-}
-.frameDiv2,
-.frameDiv5 {
-  align-self: stretch;
-  display: flex;
-}
-.frameDiv2 {
-  background-color: var(--color-gray-700);
-  flex-direction: column;
-  padding: var(--padding-lg);
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-lg);
-  color: var(--color-black);
-}
-.frameDiv5 {
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
-}
-.frameDiv4,
-.frameDiv6 {
-  align-self: stretch;
-  display: flex;
-  box-sizing: border-box;
-  align-items: center;
-}
-.frameDiv6 {
-  border-radius: var(--br-sm);
-  background-color: var(--color-gray-100);
-  flex-direction: row;
-  padding: var(--padding-sm) 0;
-  justify-content: center;
-}
-.frameDiv4 {
-  flex-direction: column;
-  padding: var(--padding-md) var(--padding-md) 0;
-  justify-content: flex-start;
-  gap: var(--gap-sm);
-  color: var(--color-gray-300);
-}
-.clickToDepositRewards,
-.teams {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  width: 49px;
-  flex-shrink: 0;
-}
-.clickToDepositRewards {
-  font-size: 12px;
-  font-weight: 300;
-  width: 171px;
-  height: 17px;
-}
-.frameDiv10 {
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--gap-0);
-  text-align: left;
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
-}
-.frameDiv12 {
-  flex: 1;
-  border-radius: var(--br-sm);
-  background-color: var(--color-gray-100);
-  padding: var(--padding-sm) 0;
-  box-sizing: border-box;
-}
-.frameDiv11,
-.frameDiv12,
-.frameDiv13,
-.frameDiv21 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.frameDiv13 {
-  border-radius: var(--br-sm);
-  background-color: var(--color-gray-100);
-  padding: var(--padding-2xs) var(--padding-xs);
-  box-sizing: border-box;
-  font-size: var(--font-size-xl);
-  color: var(--color-black);
-}
-.frameDiv11,
-.frameDiv21 {
-  align-self: stretch;
-}
-.frameDiv11 {
-  gap: var(--gap-lg);
-}
-.frameDiv21 {
-  border-radius: var(--br-md);
-  background-color: var(--color-teal);
-  padding: var(--padding-3xs) 0;
-  box-sizing: border-box;
-}
-.eventViewEditSettings,
-.frameDiv20 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.frameDiv20 {
-  align-self: stretch;
-  background-color: var(--color-white);
-  padding: var(--padding-2xl) var(--padding-lg);
-  box-sizing: border-box;
-  justify-content: center;
-  gap: var(--gap-lg);
-  font-size: var(--font-size-2xl);
-}
-.eventViewEditSettingsForm {
-  position: relative;
-  background-color: var(--color-white);
+.eventEditFormContainer {
   width: 100%;
-  justify-content: flex-start;
-  gap: var(--gap-0);
-  text-align: center;
-  font-size: var(--font-size-base);
-  color: var(--color-white);
-  font-family: var(--font-inter);
+  max-height: 180px;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
-.skeletonButton {
-  cursor: pointer;
-  border: 0;
-  align-self: stretch;
-  display: flex;
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-white);
-  padding: var(--padding-2xs) var(--padding-sm);
+.eventEditFormContainer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
-.cancel {
-  position: relative;
-  font-size: var(--font-size-base);
-  display: inline-block;
-  color: var(--color-gray-500);
+.fadedElement {
+  /* other styles */
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to bottom, white, transparent);
 }
-.frameButton1 {
-  cursor: pointer;
-  border: 0;
-  padding: var(--padding-3xs) 0;
-  background-color: var(--color-teal);
-  border-radius: var(--br-md);
-  flex-direction: row;
+.bottomWhitespace {
+  padding-bottom: 180px;
 }
-.frameButton1,
-.frameDiv20 {
-  align-self: stretch;
-  display: flex;
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-}
-.saveChanges {
-  position: relative;
-  font-size: var(--font-size-2xl);
-  display: inline-block;
-  font-family: var(--font-inter);
-  color: var(--color-white);
-  text-align: center;
-} */

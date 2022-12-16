@@ -1,4 +1,4 @@
-import { Button, Result, Spin } from "antd";
+import { Button, Result, Spin, Modal } from "antd";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import CreateEventForm, {
   OnCreateEventPayload,
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const StartViewAdditionalSetting: FunctionComponent = () => {
   const navigate = useNavigate();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { createEvent } = useEventCreate();
   const { user, signInAnonymously } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,14 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     return;
   };
 
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+  const openAuthModal = () => {
+    setIsAuthModalOpen(true);
+  };
+
   if (errorMessage) {
     return (
       <div className={styles.startViewAdditionalSetting}>
@@ -93,19 +102,23 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
         <b className={styles.b}>🏰</b>
       </div>
       {!loading ? (
-        <CreateEventForm onCreateEvent={onEventCreate} />
+        <CreateEventForm
+          onCreateEvent={onEventCreate}
+          onOpenAuthModal={openAuthModal}
+        />
       ) : (
         <div className={styles.loadingContainer}>
           <Spin size="default" style={{ display: "block", margin: "auto" }} />
         </div>
       )}
-      <div className={styles.frameDiv4}>
-        {!loading && (
-          <button className={styles.xterrangmailcomClickToCh}>
-            0xterran@gmail.com (click to change)
-          </button>
-        )}
-      </div>
+      <Modal
+        open={isAuthModalOpen}
+        onCancel={closeAuthModal}
+        bodyStyle={{ overflowX: "scroll" }}
+        okButtonProps={{ style: { display: "none" } }}
+      >
+        <div>Login</div>
+      </Modal>
     </div>
   );
 };

@@ -89,18 +89,21 @@ const EventShare: FunctionComponent = () => {
         <b className={styles.scanForFanTickets}>Scan for Fan Tickets</b>
         <div id="qrcode" />
       </div>
-      <div className={styles.frameDiv3}>
-        <div className={styles.frameDiv4}>
-          <b className={styles.scanForFanTickets}>🔒 {inviteLinkShort}</b>
+      <div className={styles.whitespace} />
+      <div className={styles.floatingButtonContainer}>
+        <div className={styles.frameDiv3}>
+          <div className={styles.frameDiv4}>
+            <b className={styles.scanForFanTickets}>🔒 {inviteLinkShort}</b>
+          </div>
+          <button className={styles.frameButton1} onClick={copyInviteLink}>
+            <b className={styles.copyLink}>Copy Link</b>
+          </button>
         </div>
-        <button className={styles.frameButton1} onClick={copyInviteLink}>
-          <b className={styles.copyLink}>Copy Link</b>
-        </button>
-      </div>
-      <div className={styles.frameDiv5}>
-        <button className={styles.xterrangmailcomClickToCh}>
-          0xterran@gmail.com (click to change)
-        </button>
+        <div className={styles.frameDiv5}>
+          <button className={styles.xterrangmailcomClickToCh}>
+            0xterran@gmail.com (click to change)
+          </button>
+        </div>
       </div>
     </div>
   );

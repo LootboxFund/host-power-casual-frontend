@@ -1,0 +1,115 @@
+.tEAMNAME,
+.tEAMSETTINGS {
+  position: relative;
+  display: inline-block;
+  font-size: var(--font-size-xl);
+}
+.tEAMNAME {
+  border: 0;
+  font-family: var(--font-inter);
+  font-size: var(--font-size-lg);
+  background-color: transparent;
+  font-weight: 700;
+  color: var(--color-gray-500);
+  text-align: center;
+}
+.frameDiv1 {
+  align-self: stretch;
+  border-radius: var(--br-sm);
+  background-color: var(--color-gray-100);
+  display: flex;
+  flex-direction: row;
+  padding: var(--padding-xs) var(--padding-md);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+.sAVECHANGES {
+  position: relative;
+  font-size: var(--font-size-lg);
+  display: inline-block;
+  font-family: var(--font-inter);
+  color: var(--color-white);
+  text-align: center;
+}
+.frameButton,
+.frameButton1 {
+  cursor: pointer;
+  border: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+.frameButton1 {
+  padding: var(--padding-xs) var(--padding-md);
+  background-color: var(--color-teal);
+  border-radius: var(--br-md);
+  flex-direction: row;
+  box-sizing: border-box;
+  justify-content: center;
+}
+.frameButton {
+  padding: 0;
+  background-color: transparent;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.vIEWLOOTBOX {
+  position: relative;
+  font-size: var(--font-size-lg);
+  font-family: var(--font-inter);
+  color: var(--color-teal);
+  text-align: center;
+  display: inline-block;
+}
+.frameButton3 {
+  cursor: pointer;
+  border: 1px solid var(--color-teal);
+  padding: var(--padding-xs) var(--padding-md);
+  background-color: var(--color-white);
+  align-self: stretch;
+  border-radius: var(--br-md);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.removeTeam {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  position: relative;
+  font-size: var(--font-size-base);
+  display: inline-block;
+  font-style: italic;
+  font-family: var(--font-inter);
+  color: var(--color-gray-300);
+  text-align: center;
+}
+.editLootboxModal,
+.frameDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.frameDiv {
+  align-self: stretch;
+  align-items: center;
+  gap: 15px;
+}
+.editLootboxModal {
+  position: relative;
+  border-radius: var(--br-sm);
+  background-color: var(--color-white);
+  width: 100%;
+  height: 421px;
+  padding: 50px 13px;
+  box-sizing: border-box;
+  align-items: flex-start;
+  text-align: center;
+  font-size: var(--font-size-md);
+  color: var(--color-gray-500);
+  font-family: var(--font-inter);
+}
