@@ -1,7 +1,6 @@
-import { FunctionComponent, useEffect, useRef, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import styles from "./index.module.css";
-import { Spin, Modal, message } from "antd";
-import { MessageType } from "antd/es/message/interface";
+import { Modal, message } from "antd";
 
 const LOOTBOX_LIMIT = 30;
 

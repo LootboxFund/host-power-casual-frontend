@@ -11,7 +11,11 @@ import {
   MutationCreateUserRecordArgs,
 } from "../../api/graphql/generated/types";
 import { useMutation } from "@apollo/client";
-import { CREATE_USER } from "./api.gql";
+import {
+  CREATE_USER,
+  UPGRADE_TO_AFFILIATE,
+  UpgradeToAffilitateResponseFE,
+} from "./api.gql";
 import client from "../../api/graphql/client";
 
 interface FrontendUser {
@@ -48,6 +52,9 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
     MutationCreateUserRecordArgs
   >(CREATE_USER);
 
+  const [upgradeToAffiliateMutation] =
+    useMutation<UpgradeToAffilitateResponseFE>(UPGRADE_TO_AFFILIATE);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -75,6 +82,7 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
     }
 
     await createUserMutation({ variables: { payload: createUserPayload } });
+    await upgradeToAffiliateMutation();
 
     return convertUserToUserFE(user);
   };

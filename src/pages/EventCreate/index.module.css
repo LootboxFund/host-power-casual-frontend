@@ -33,7 +33,7 @@
 }
 .frameDiv1 {
   align-self: stretch;
-  background-color: var(--color-gray-500);
+  background-color: var(--color-white);
   display: flex;
   flex-direction: row;
   padding: var(--padding-3xl) var(--padding-4xl);
@@ -164,7 +164,7 @@
 }
 .frameDiv4 {
   align-self: stretch;
-  background-color: var(--color-gray-500);
+  background-color: var(--color-white);
   display: flex;
   flex-direction: column;
   padding: 0 var(--padding-md) var(--padding-lg);

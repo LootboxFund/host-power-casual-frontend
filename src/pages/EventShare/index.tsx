@@ -1,20 +1,20 @@
 import { FunctionComponent, useEffect } from "react";
 import styles from "./index.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { manifest } from "../../manifest";
 import QRCodeComponent from "easyqrcodejs";
-import { EventFE, ReferralFE } from "../../lib/types";
+import { ReferralFE } from "../../lib/types";
 import { message } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
 
 const QR_CODE_ELEMENT_ID = "qrcode";
 
 export interface NavigationState {
-  event?: EventFE;
   referral?: ReferralFE;
 }
 const EventShare: FunctionComponent = () => {
   const navigate = useNavigate();
+  const { id: eventID } = useParams();
   const { state }: { state: NavigationState } = useLocation();
 
   const inviteLink = `${manifest.microfrontends.webflow.referral}?r=${state?.referral?.slug}`;
@@ -49,15 +49,10 @@ const EventShare: FunctionComponent = () => {
   }, [inviteLink]);
 
   const navigateToEdit = () => {
-    if (!state.event || !state.referral) {
-      return;
-    }
-
     const navState: EventEditNavigationState = {
-      event: state.event,
       referral: state.referral,
     };
-    navigate(`/edit`, { state: navState });
+    navigate(`/edit/${eventID}`, { state: navState });
   };
 
   const copyInviteLink = async () => {
@@ -69,9 +64,9 @@ const EventShare: FunctionComponent = () => {
     }
   };
 
-  if (!state.event || !state.referral) {
+  if (!state.referral) {
     // Gets caught in /src/routes.tsx
-    throw new Error("Invalid state");
+    throw new Error("No referral provided");
   }
 
   return (

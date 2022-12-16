@@ -1,20 +1,34 @@
 import { FunctionComponent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EventEditForm, {
   OnEditEventFormPayload,
 } from "../../components/EventEditForm";
 import { EventFE, ReferralFE } from "../../lib/types";
 import useEventEdit, { EditEventPayload } from "../../hooks/useEventEdit";
 import styles from "./index.module.css";
+import useEvent from "../../hooks/useEvent";
+import { TournamentID } from "@wormgraph/helpers";
+import { Spin } from "antd";
+import useEventLootboxes from "../../hooks/useEventLootboxes";
 
 export interface EventEditNavigationState {
-  event: EventFE;
-  referral: ReferralFE;
+  referral?: ReferralFE;
 }
 
 const EventEdit: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { state }: { state: EventEditNavigationState } = useLocation();
+  let { id: eventID } = useParams();
+  console.log("event id", eventID);
+  const { event, loading: loadingEvent } = useEvent({
+    eventID: eventID as TournamentID,
+  });
+  const { lootboxes, loading: loadingLootboxes } = useEventLootboxes({
+    eventID: eventID as TournamentID,
+  });
+
+  console.log("event", event);
+  console.log("lootboxes", lootboxes);
+
   const { editEvent } = useEventEdit();
 
   const navigateBack = () => {
@@ -22,16 +36,13 @@ const EventEdit: FunctionComponent = () => {
   };
 
   const handleEditEvent = async (payload: OnEditEventFormPayload) => {
-    await editEvent(payload);
+    // await editEvent(payload);
+
+    console.log("edit", "lol");
 
     // TODO: REFETCH DATA
     return;
   };
-
-  if (!state.event || !state.referral) {
-    // Gets caught in /src/routes.tsx
-    throw new Error("Invalid state");
-  }
 
   return (
     <div className={styles.eventViewEditSettings}>
@@ -48,7 +59,13 @@ const EventEdit: FunctionComponent = () => {
           </i>
         </div>
       </div>
-      <EventEditForm onEdit={handleEditEvent} onFormCancel={navigateBack} />
+      {!loadingEvent ? (
+        <EventEditForm onEdit={handleEditEvent} onFormCancel={navigateBack} />
+      ) : (
+        <div className={styles.loadingContainer}>
+          <Spin size="default" style={{ display: "block", margin: "auto" }} />
+        </div>
+      )}
     </div>
   );
 };

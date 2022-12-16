@@ -25,23 +25,25 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
   const [loading, setLoading] = useState(false);
 
   const onEdit = async () => {
-    if (loading) {
-      return;
-    }
+    console.log("edit event");
 
-    const loadingMessage = message.loading("Editing Event...", 0);
-    setLoading(true);
-    try {
-      await props.onEdit({});
-      message.success("Event updated!", 2);
-    } catch (err: any) {
-      message.error(err.message);
-    } finally {
-      loadingMessage();
-      setLoading(false);
-    }
+    // if (loading) {
+    //   return;
+    // }
 
-    return;
+    // const loadingMessage = message.loading("Editing Event...", 0);
+    // setLoading(true);
+    // try {
+    //   // await props.onEdit({});  // TEMP
+    //   message.success("Event updated!", 2);
+    // } catch (err: any) {
+    //   message.error(err.message);
+    // } finally {
+    //   loadingMessage();
+    //   setLoading(false);
+    // }
+
+    // return;
   };
 
   return (

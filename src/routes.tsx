@@ -1,4 +1,3 @@
-import { Result } from "antd";
 import { createBrowserRouter } from "react-router-dom";
 
 // pages
@@ -18,12 +17,12 @@ const router = createBrowserRouter([
     element: <EventCreate />,
   },
   {
-    path: "/edit",
+    path: "/edit/:id",
     element: <EventEdit />,
     errorElement: <EditEventPageError />,
   },
   {
-    path: "/share",
+    path: "/share/:id",
     element: <EventShare />,
     errorElement: <ShareEventPageError />,
   },

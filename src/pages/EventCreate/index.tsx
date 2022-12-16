@@ -57,7 +57,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
     };
     const { event, referral } = await createEvent(serviceRequest);
 
-    navigate("/share", { state: { event, referral } });
+    navigate(`/share/${event.id}`, { state: { referral } });
 
     return;
   };
