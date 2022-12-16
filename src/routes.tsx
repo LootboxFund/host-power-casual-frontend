@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import EventCreate from "./pages/EventCreate";
 import EventEdit from "./pages/EventEdit";
 import EventShare from "./pages/EventShare";
+import LoginPage from "./pages/Login";
 
 // error handling
 import {
@@ -11,19 +12,34 @@ import {
   EditEventPageError,
 } from "./components/ErrorViews";
 
+// auth guard
+import RequireAuth from "./components/RequireAuth";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <EventCreate />,
   },
   {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
     path: "/edit/:id",
-    element: <EventEdit />,
+    element: (
+      <RequireAuth redirectTo="/login">
+        <EventEdit />
+      </RequireAuth>
+    ),
     errorElement: <EditEventPageError />,
   },
   {
     path: "/share/:id",
-    element: <EventShare />,
+    element: (
+      <RequireAuth redirectTo="/login">
+        <EventShare />
+      </RequireAuth>
+    ),
     errorElement: <ShareEventPageError />,
   },
 ]);

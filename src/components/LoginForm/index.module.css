@@ -1,0 +1,111 @@
+.loginToLootbox {
+  position: relative;
+  display: inline-block;
+}
+.frameDiv1 {
+  flex-direction: row;
+  justify-content: center;
+}
+.frameDiv1,
+.frameDiv2,
+.frameInput {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+.frameInput {
+  border: 0;
+  font-family: var(--font-inter);
+  font-size: var(--font-size-lg);
+  background-color: var(--color-gray-100);
+  border-radius: var(--br-sm);
+  flex-direction: row;
+  padding: var(--padding-sm) var(--padding-sm);
+  box-sizing: border-box;
+  justify-content: center;
+  text-align: center;
+}
+.frameDiv2 {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.next {
+  position: relative;
+  font-size: var(--font-size-xl);
+  display: inline-block;
+  font-family: var(--font-inter);
+  color: var(--color-white);
+  text-align: center;
+}
+.frameButton {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-sm) var(--padding-sm);
+  background-color: var(--color-teal);
+  align-self: stretch;
+  border-radius: var(--br-md);
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+.useAPassword {
+  position: relative;
+  font-size: var(--font-size-lg);
+  font-family: var(--font-inter);
+  color: var(--color-teal);
+  text-align: center;
+  display: inline-block;
+}
+.frameButton1 {
+  cursor: pointer;
+  border: 1px solid var(--color-teal);
+  padding: var(--padding-sm) var(--padding-sm);
+  background-color: var(--color-white);
+  align-self: stretch;
+  border-radius: var(--br-md);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.cancel {
+  position: relative;
+  font-size: var(--font-size-base);
+  display: inline-block;
+  font-family: var(--font-inter);
+  color: var(--color-gray-300);
+  text-align: center;
+}
+.frameButton2,
+.frameDiv {
+  align-self: stretch;
+  display: flex;
+}
+.frameButton2 {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.frameDiv {
+  border-radius: var(--br-sm);
+  background-color: var(--color-white);
+  height: 463px;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: var(--padding-sm) var(--padding-sm);
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-lg);
+  text-align: center;
+  font-size: var(--font-size-xl);
+  color: var(--color-gray-500);
+  font-family: var(--font-inter);
+}
