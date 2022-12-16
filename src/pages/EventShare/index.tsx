@@ -3,8 +3,9 @@ import styles from "./index.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { manifest } from "../../manifest";
 import QRCodeComponent from "easyqrcodejs";
-import { EventFE, ReferralFE } from "../../hooks/useEventCreate";
+import { EventFE, ReferralFE } from "../../lib/types";
 import { message } from "antd";
+import { EventEditNavigationState } from "../EventEdit";
 
 const QR_CODE_ELEMENT_ID = "qrcode";
 
@@ -14,14 +15,9 @@ export interface NavigationState {
 }
 const EventShare: FunctionComponent = () => {
   const navigate = useNavigate();
-
   const { state }: { state: NavigationState } = useLocation();
 
-  if (!state.event || !state.referral) {
-    throw new Error("Invalid state");
-  }
-
-  const inviteLink = `${manifest.microfrontends.webflow.referral}?r=${state.referral.slug}`;
+  const inviteLink = `${manifest.microfrontends.webflow.referral}?r=${state?.referral?.slug}`;
   const inviteLinkShort = inviteLink.replace("https://", "");
 
   useEffect(() => {
@@ -53,13 +49,30 @@ const EventShare: FunctionComponent = () => {
   }, [inviteLink]);
 
   const navigateToEdit = () => {
-    navigate(`/edit`);
+    if (!state.event || !state.referral) {
+      return;
+    }
+
+    const navState: EventEditNavigationState = {
+      event: state.event,
+      referral: state.referral,
+    };
+    navigate(`/edit`, { state: navState });
   };
 
-  const copyInviteLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    message.success("Copied to clipboard");
+  const copyInviteLink = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      message.success("Copied to clipboard");
+    } catch (err) {
+      message.error("An error occured");
+    }
   };
+
+  if (!state.event || !state.referral) {
+    // Gets caught in /src/routes.tsx
+    throw new Error("Invalid state");
+  }
 
   return (
     <div className={styles.eventViewScanQRCodeResp}>

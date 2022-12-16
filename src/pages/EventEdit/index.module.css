@@ -21,6 +21,7 @@
   font-size: var(--font-size-base);
   display: inline-block;
   color: var(--color-gray-500);
+  text-align: start;
 }
 .frameDiv3 {
   display: flex;
@@ -33,7 +34,7 @@
 .frameDiv2 {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
 }
 .frameDiv2 {
   align-self: stretch;

@@ -1,5 +1,3 @@
-import { createContext } from "react";
-import { ReferralSlug, TournamentID } from "@wormgraph/helpers";
 import {
   BulkCreateLootboxResponseFE,
   BULK_CREATE_LOOTBOX,
@@ -15,15 +13,7 @@ import {
   ReferralType,
 } from "../../api/graphql/generated/types";
 import { useMutation } from "@apollo/client";
-
-export interface EventFE {
-  id: TournamentID;
-}
-
-export interface ReferralFE {
-  id: string;
-  slug: ReferralSlug;
-}
+import { EventFE, ReferralFE } from "../../lib/types";
 
 export interface CreateEventPayload {
   title?: string;
@@ -32,21 +22,10 @@ export interface CreateEventPayload {
   nftBountyValue?: string;
 }
 
-export interface EventContextType {
-  event?: EventFE;
-  referral?: ReferralFE;
-  loadingCreateEvent: boolean;
-  createEvent: (
-    payload: CreateEventPayload
-  ) => Promise<CreateEventResponseSuccessFE>;
-}
-
 export interface CreateEventResponseSuccessFE {
   event: EventFE;
   referral: ReferralFE;
 }
-
-export const EventContext = createContext<EventContextType | null>(null);
 
 const useEventCreate = () => {
   const [createEventMutation, { loading: loadingEventCreate }] = useMutation<
@@ -78,7 +57,6 @@ const useEventCreate = () => {
     let createdEvent: EventFE;
     let createdReferral: ReferralFE;
 
-    // await props.onCreateEvent(payload);
     const eventResponse = await createEventMutation({
       variables: {
         payload: {
@@ -95,6 +73,7 @@ const useEventCreate = () => {
     ) {
       createdEvent = {
         id: eventResponse.data.createTournament.tournament.id,
+        title: eventResponse.data.createTournament.tournament.title,
       };
     } else {
       throw new Error("An error occured!");

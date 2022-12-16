@@ -1,7 +1,10 @@
-import { ReferralSlug, TournamentID } from "@wormgraph/helpers";
 import { FunctionComponent } from "react";
-import EventEditForm from "../../components/EventEditForm";
-import { EventFE, ReferralFE } from "../../hooks/useEventCreate";
+import { useLocation, useNavigate } from "react-router-dom";
+import EventEditForm, {
+  OnEditEventFormPayload,
+} from "../../components/EventEditForm";
+import { EventFE, ReferralFE } from "../../lib/types";
+import useEventEdit, { EditEventPayload } from "../../hooks/useEventEdit";
 import styles from "./index.module.css";
 
 export interface EventEditNavigationState {
@@ -10,6 +13,26 @@ export interface EventEditNavigationState {
 }
 
 const EventEdit: FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { state }: { state: EventEditNavigationState } = useLocation();
+  const { editEvent } = useEventEdit();
+
+  const navigateBack = () => {
+    navigate(-1);
+  };
+
+  const handleEditEvent = async (payload: OnEditEventFormPayload) => {
+    await editEvent(payload);
+
+    // TODO: REFETCH DATA
+    return;
+  };
+
+  if (!state.event || !state.referral) {
+    // Gets caught in /src/routes.tsx
+    throw new Error("Invalid state");
+  }
+
   return (
     <div className={styles.eventViewEditSettings}>
       <div className={styles.frameDiv}>
@@ -25,7 +48,7 @@ const EventEdit: FunctionComponent = () => {
           </i>
         </div>
       </div>
-      <EventEditForm />
+      <EventEditForm onEdit={handleEditEvent} onFormCancel={navigateBack} />
     </div>
   );
 };
