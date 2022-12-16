@@ -6,14 +6,18 @@ import QRCodeComponent from "easyqrcodejs";
 import { ReferralFE } from "../../lib/types";
 import { message } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
+import { useAuth } from "../../hooks/useAuth";
+import EventQRCode from "../../components/EventQRCode";
 
 const QR_CODE_ELEMENT_ID = "qrcode";
 
 export interface NavigationState {
   referral?: ReferralFE;
+  onOpenAuthModal: () => void;
 }
 const EventShare: FunctionComponent = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { id: eventID } = useParams();
   const { state }: { state: NavigationState } = useLocation();
 
@@ -85,10 +89,11 @@ const EventShare: FunctionComponent = () => {
           </i>
         </button>
       </div>
-      <div className={styles.frameDiv2}>
+      {/* <div className={styles.frameDiv2}>
         <b className={styles.scanForFanTickets}>Scan for Fan Tickets</b>
         <div id="qrcode" />
-      </div>
+      </div> */}
+      <EventQRCode referral={state.referral} />
       <div className={styles.whitespace} />
       <div className={styles.floatingButtonContainer}>
         <div className={styles.frameDiv3}>
@@ -100,8 +105,15 @@ const EventShare: FunctionComponent = () => {
           </button>
         </div>
         <div className={styles.frameDiv5}>
-          <button className={styles.xterrangmailcomClickToCh}>
-            0xterran@gmail.com (click to change)
+          <button
+            className={styles.xterrangmailcomClickToCh}
+            // onClick={props.onOpenAuthModal}
+          >
+            {user?.isAnonymous
+              ? "Unverified User (click to login)"
+              : user?.email
+              ? `${user.email} (click to change)`
+              : "Click to login"}
           </button>
         </div>
       </div>
