@@ -1,5 +1,5 @@
 import { LootboxID, TournamentID } from "@wormgraph/helpers";
-import { message } from "antd";
+import { message, Result, Spin } from "antd";
 import { OmitProps } from "antd/es/transfer/ListBody";
 import { FunctionComponent, useEffect, useState } from "react";
 import { EventFE, LootboxFE } from "../../lib/types";
@@ -18,6 +18,7 @@ export interface OnEditEventFormPayload {
 interface EventViewEditSettingsProps {
   event: EventFE;
   lootboxes: LootboxFE[];
+  loadingLootboxes: boolean;
   onFormCancel?: () => void;
   onEdit: (payload: OnEditEventFormPayload) => Promise<void>;
   onOpenTeamSettings: (lootbox: LootboxFE) => void;
@@ -51,23 +52,56 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
   const onEdit = async () => {
     console.log("edit event");
 
-    // if (loading) {
-    //   return;
-    // }
+    if (loading) {
+      return;
+    }
 
-    // const loadingMessage = message.loading("Editing Event...", 0);
-    // setLoading(true);
-    // try {
-    //   // await props.onEdit({});  // TEMP
-    //   message.success("Event updated!", 2);
-    // } catch (err: any) {
-    //   message.error(err.message);
-    // } finally {
-    //   loadingMessage();
-    //   setLoading(false);
-    // }
+    const loadingMessage = message.loading("Editing Event...", 0);
+    setLoading(true);
+    try {
+      // get lootboxes to edit:
+      const mapping: { [key: LootboxID]: LootboxFE } = {};
+      props.lootboxes.forEach((lootbox) => {
+        mapping[lootbox.id] = lootbox;
+      });
+      const lootboxesToEdit = lootboxesTmp
+        .filter((lootboxTmp) => {
+          const lootbox = mapping[lootboxTmp.id];
+          if (!lootbox) {
+            return false;
+          }
 
-    // return;
+          return (
+            lootbox.maxTickets !== maxTicketsTmp ||
+            lootbox.name !== lootboxTmp.name ||
+            lootbox.nftBountyValue !== ticketPrizeTmp ||
+            lootboxTmp.maxTickets !== maxTicketsTmp
+          );
+        })
+        .map((lootboxTmp) => {
+          const lootbox = mapping[lootboxTmp.id];
+          return {
+            ...lootbox,
+            maxTickets: maxTicketsTmp,
+            name: lootboxTmp.name,
+            nftBountyValue: ticketPrizeTmp,
+          };
+        });
+
+      await props.onEdit({
+        id: props.event.id,
+        title: eventNameTmp !== props.event.title ? eventNameTmp : undefined,
+        lootboxes: lootboxesToEdit,
+      });
+      message.success("Event updated!", 2);
+    } catch (err: any) {
+      message.error(err.message);
+    } finally {
+      loadingMessage();
+      setLoading(false);
+    }
+
+    return;
   };
 
   return (
@@ -87,7 +121,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
         />
         <input
           className={styles.frameInput}
-          type="text"
+          type="number"
           placeholder="MAX TICKETS PER TEAM"
           value={maxTicketsTmp}
           onChange={(e) => {
@@ -124,7 +158,14 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
             <b className={styles.b1}>➕</b>
           </button>
         </div>
-        {props.lootboxes.map((team) => {
+        {props.loadingLootboxes && (
+          <Result
+            icon={
+              <Spin size="large" style={{ display: "block", margin: "auto" }} />
+            }
+          />
+        )}
+        {lootboxesTmp.map((team) => {
           return (
             <div key={"Team" + team.id} className={styles.frameDiv7}>
               <input
@@ -133,7 +174,6 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
                 placeholder="TEAM #1"
                 value={team.name}
                 onChange={(e) => {
-                  console.log("change " + team.id, e.target.value);
                   setLootboxesTmp((prev) => {
                     const newLootboxes = prev.map((lootbox) => {
                       if (lootbox.id === team.id) {

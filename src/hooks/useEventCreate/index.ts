@@ -65,8 +65,6 @@ const useEventCreate = () => {
       },
     });
 
-    console.log("Created event", eventResponse);
-
     if (
       eventResponse?.data?.createTournament?.__typename ===
       "CreateTournamentResponseSuccess"

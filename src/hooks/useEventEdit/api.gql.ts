@@ -45,7 +45,7 @@ export interface EditLootboxResponseSuccessFE {
         lootbox: {
           id: LootboxID;
           nftBountyValue: string;
-          title: string;
+          name: string;
         };
       }
     | {
@@ -64,7 +64,7 @@ export const EDIT_LOOTBOX = gql`
         lootbox {
           id
           nftBountyValue
-          title
+          name
           maxTickets
         }
       }

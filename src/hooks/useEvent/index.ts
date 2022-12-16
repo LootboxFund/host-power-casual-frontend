@@ -13,10 +13,11 @@ interface UseEventProps {
 interface UseEventOutput {
   event?: EventFE;
   loading: boolean;
+  refetch: () => void;
 }
 
 const useEvent = (props: UseEventProps): UseEventOutput => {
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     ViewTournamentAsOrganizerResponseFE,
     QueryViewTournamentAsOrganizerArgs
   >(VIEW_TOURNAMENT_AS_ORGANIZER, {
@@ -35,10 +36,10 @@ const useEvent = (props: UseEventProps): UseEventOutput => {
         }
       : undefined;
 
-  console.log("YO", event, loading, error);
   return {
     event,
     loading: loading,
+    refetch,
   };
 };
 

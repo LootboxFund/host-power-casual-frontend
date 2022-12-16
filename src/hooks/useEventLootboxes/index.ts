@@ -13,12 +13,13 @@ interface UseEventLootboxesProps {
 interface UseEventLootboxesOutput {
   lootboxes: LootboxFE[];
   loading: boolean;
+  refetch: () => void;
 }
 
 const useEventLootboxes = (
   props: UseEventLootboxesProps
 ): UseEventLootboxesOutput => {
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     ViewEventLootboxesAsOrganizerResponseFE,
     QueryViewTournamentAsOrganizerArgs
   >(VIEW_EVENT_LOOTBOXES_AS_ORGANIZER, {
@@ -47,6 +48,7 @@ const useEventLootboxes = (
   return {
     lootboxes: lootboxSnapshots,
     loading,
+    refetch,
   };
 };
 

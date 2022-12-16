@@ -23,10 +23,18 @@ const EventEdit: FunctionComponent = () => {
   const [isEditLootboxModalOpen, setIsEditLootboxModalOpen] = useState(false);
   const navigate = useNavigate();
   let { id: eventID } = useParams();
-  const { event, loading: loadingEvent } = useEvent({
+  const {
+    event,
+    loading: loadingEvent,
+    refetch: refetchEvent,
+  } = useEvent({
     eventID: eventID as TournamentID,
   });
-  const { lootboxes, loading: loadingLootboxes } = useEventLootboxes({
+  const {
+    lootboxes,
+    loading: loadingLootboxes,
+    refetch: refetchLootboxes,
+  } = useEventLootboxes({
     eventID: eventID as TournamentID,
   });
 
@@ -41,11 +49,10 @@ const EventEdit: FunctionComponent = () => {
   };
 
   const handleEditEvent = async (payload: OnEditEventFormPayload) => {
-    // await editEvent(payload);
+    await editEvent(payload);
 
-    console.log("edit", "lol");
-
-    // TODO: REFETCH DATA
+    refetchEvent();
+    refetchLootboxes();
     return;
   };
 
@@ -86,18 +93,21 @@ const EventEdit: FunctionComponent = () => {
         <EventEditForm
           event={event}
           lootboxes={lootboxes}
+          loadingLootboxes={loadingLootboxes}
           onEdit={handleEditEvent}
           onFormCancel={navigateBack}
           onOpenTeamSettings={handleOpenTeamSettings}
         />
       ) : (
-        <Result
-          status="info"
-          title="Event not found"
-          subTitle={
-            <Button onClick={navigateToCreate}>Create a new one?</Button>
-          }
-        ></Result>
+        <div className={styles.loadingContainer}>
+          <Result
+            status="info"
+            title="Event not found"
+            subTitle={
+              <Button onClick={navigateToCreate}>Create a new one?</Button>
+            }
+          ></Result>
+        </div>
       )}
 
       <Modal

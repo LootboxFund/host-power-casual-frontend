@@ -1,5 +1,4 @@
-import { createContext } from "react";
-import { LootboxID, ReferralSlug, TournamentID } from "@wormgraph/helpers";
+import { LootboxID, TournamentID } from "@wormgraph/helpers";
 import {
   EditEventResponseFE,
   EDIT_EVENT,
@@ -7,12 +6,8 @@ import {
   EDIT_LOOTBOX,
 } from "./api.gql";
 import {
-  MutationBulkCreateLootboxArgs,
-  MutationCreateReferralArgs,
-  MutationCreateTournamentArgs,
   MutationEditLootboxArgs,
   MutationEditTournamentArgs,
-  ReferralType,
 } from "../../api/graphql/generated/types";
 import { useMutation } from "@apollo/client";
 import { EventFE, LootboxFE } from "../../lib/types";
@@ -54,10 +49,10 @@ const useEventEdit = () => {
    */
   const editEvent = async (
     payload: EditEventPayload
-  ): Promise<EditEventResponseSuccessFE> => {
+    //   ): Promise<EditEventResponseSuccessFE> => {
+  ): Promise<void> => {
     const shouldUpdateEventBody: boolean = !!payload.title;
     const shouldUpdateLootboxes: boolean = !!payload.lootboxes?.length;
-
     if (!shouldUpdateEventBody && !shouldUpdateLootboxes) {
       throw new Error("Nothing to change");
     }
@@ -81,7 +76,9 @@ const useEventEdit = () => {
       ) {
         throw new Error("An error occured!");
       }
+    }
 
+    if (shouldUpdateLootboxes) {
       // Now update the lootboxes
       const lootboxResponse = await Promise.all(
         payload?.lootboxes?.map(async (lootbox) => {
@@ -112,7 +109,7 @@ const useEventEdit = () => {
       }
     }
 
-    return {} as EditEventResponseSuccessFE; // TEMP HACK
+    return;
     // return {
     //   event: {
     //     id: eventResponse.data.editTournament.tournament.id,
