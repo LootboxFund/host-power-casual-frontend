@@ -109,3 +109,18 @@
   color: var(--color-gray-500);
   font-family: var(--font-inter);
 }
+.ghostButton {
+  background-color: transparent;
+  border: 0;
+  width: 100%;
+}
+.lightText {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  line-height: var(--font-size-lg);
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-gray-300);
+}

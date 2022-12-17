@@ -104,7 +104,8 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
       <div className={styles.frameDiv}>
         <div className={styles.groupDiv}>
           <i className={styles.fanTicketsPoweredBy}>Fan Tickets Powered By</i>
-          <b className={styles.lOOTBOX}>🎁 LOOTBOX</b>
+          &nbsp;
+          <b className={styles.lOOTBOX}> 🎁 LOOTBOX</b>
         </div>
       </div>
       <div className={styles.frameDiv1}>

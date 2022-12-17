@@ -1,6 +1,8 @@
 .switchToAdvancedMode {
   position: relative;
   display: inline-block;
+  font-family: var(--font-sans-serif);
+  font-weight: 400;
 }
 .frameDiv,
 .frameDiv1 {
@@ -24,12 +26,13 @@
   text-align: center;
 }
 .frameDiv3 {
-  display: flex;
+  display: inline-block;
+  /* display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: var(--gap-lg);
-  margin: auto;
+  margin: auto; */
 }
 .eventViewEditSettings,
 .frameDiv2 {
@@ -46,6 +49,7 @@
   font-size: var(--font-size-lg);
   color: var(--color-black);
   text-align: center;
+  display: inline;
 }
 .eventViewEditSettings {
   position: relative;
@@ -66,4 +70,17 @@
   color: var(--color-white);
   text-decoration: none;
   width: 100%;
+}
+.ghostButton {
+  background-color: transparent;
+  border: 0;
+}
+.lightText {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-gray-300);
 }

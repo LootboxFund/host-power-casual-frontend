@@ -8,6 +8,8 @@ import { EventEditNavigationState } from "../EventEdit";
 import { useAuth } from "../../hooks/useAuth";
 import EventQRCode from "../../components/EventQRCode";
 import LoginForm from "../../components/LoginForm";
+import useEvent from "../../hooks/useEvent";
+import { TournamentID } from "@wormgraph/helpers";
 
 export interface NavigationState {
   referral?: ReferralFE;
@@ -16,10 +18,12 @@ export interface NavigationState {
 const EventShare: FunctionComponent = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  console.log("user", user);
   const { id: eventID } = useParams();
   const { state }: { state: NavigationState } = useLocation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { event } = useEvent({
+    eventID: (eventID || "") as TournamentID,
+  });
 
   const inviteLink = useMemo(() => {
     return `${manifest.microfrontends.webflow.referral}?r=${state?.referral?.slug}`;
@@ -65,23 +69,24 @@ const EventShare: FunctionComponent = () => {
       {user?.isAnonymous ? (
         <div className={styles.frameDivUnverified} onClick={openAuthModel}>
           <i className={styles.warningText}>
-            ⚠️ Don't Lose Your Event! Click to Add Your Email
+            ⚠️ Don't lose your event! Click to add your email
           </i>
         </div>
       ) : (
         <div className={styles.frameDiv}>
           <div className={styles.groupDiv}>
             <i className={styles.fanTicketsPoweredBy}>Fan Tickets Powered By</i>
+            &nbsp;
             <b className={styles.lOOTBOX}>🎁 LOOTBOX</b>
           </div>
         </div>
       )}
 
       <div className={styles.frameDiv1}>
-        <button className={styles.frameButton} onClick={navigateToEdit}>
-          <b className={styles.b}>🏰</b>
-          <i className={styles.epicBattleEventClickToEd}>
-            Epic Battle Event (click to edit)
+        <button className={styles.ghostButton} onClick={navigateToEdit}>
+          <b className={styles.b}>🏰</b>&nbsp;
+          <i className={styles.lightText}>
+            {event?.title || "Epic Battle Event"} (click to edit)
           </i>
         </button>
       </div>
@@ -97,15 +102,14 @@ const EventShare: FunctionComponent = () => {
           </button>
         </div>
         <div className={styles.frameDiv5}>
-          <button
-            className={styles.xterrangmailcomClickToCh}
-            onClick={openAuthModel}
-          >
-            {user?.isAnonymous
-              ? "Unverified User (click to login)"
-              : user?.email
-              ? `${user.email} (click to change)`
-              : "Click to login"}
+          <button className={styles.ghostButton} onClick={openAuthModel}>
+            <i className={styles.lightText}>
+              {user?.isAnonymous
+                ? "Unverified User (click to login)"
+                : user?.email
+                ? `${user.email} (click to change)`
+                : "Click to login"}
+            </i>
           </button>
         </div>
       </div>

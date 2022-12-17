@@ -17,6 +17,8 @@ export interface OnEditEventFormPayload {
 export interface AddTeamPayload {
   eventID: TournamentID;
   teamName?: string;
+  maxTickets?: number;
+  nftBountyValue?: string;
 }
 
 interface EventViewEditSettingsProps {
@@ -122,6 +124,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
       await props.addTeam({
         eventID: props.event.id,
         teamName: teamNameTmp,
+        maxTickets: maxTicketsTmp,
       });
       message.success("Team added to event!", 2);
       setTeamNameTmp("");
@@ -141,41 +144,51 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
         <div className={styles.frameDiv4}>
           <b className={styles.b}>About Event</b>
         </div>
-        <input
-          className={styles.frameInput}
-          type="text"
-          placeholder="EVENT NAME"
-          value={eventNameTmp}
-          onChange={(e) => {
-            setEventNameTmp(e.target.value ? e.target.value : undefined);
-          }}
-        />
-        <input
-          className={styles.frameInput}
-          type="number"
-          placeholder="MAX TICKETS PER TEAM"
-          value={maxTicketsTmp}
-          onChange={(e) => {
-            setMaxTicketsTmp(
-              e.target.valueAsNumber ? e.target.valueAsNumber : undefined
-            );
-          }}
-        />
-        <input
-          className={styles.frameInput}
-          type="text"
-          placeholder="TICKET PRIZE"
-          value={ticketPrizeTmp}
-          onChange={(e) => {
-            setTicketPrizeTmp(e.target.value ? e.target.value : undefined);
-          }}
-        />
+        <div className={styles.frameInput}>
+          <label className={styles.label}>Name</label>
+          <input
+            className={styles.inputSkeleton}
+            type="text"
+            placeholder="Event Name"
+            value={eventNameTmp}
+            onChange={(e) => {
+              setEventNameTmp(e.target.value ? e.target.value : undefined);
+            }}
+          />
+        </div>
+
+        <div className={styles.frameInput}>
+          <label className={styles.label}>Max Tickets</label>
+          <input
+            className={styles.inputSkeleton}
+            type="number"
+            placeholder="Max Tickets"
+            value={maxTicketsTmp}
+            onChange={(e) => {
+              setMaxTicketsTmp(
+                e.target.valueAsNumber ? e.target.valueAsNumber : undefined
+              );
+            }}
+          />
+        </div>
+        <div className={styles.frameInput}>
+          <label className={styles.label}>Ticket Prize</label>
+
+          <input
+            className={styles.inputSkeleton}
+            type="text"
+            placeholder="Ticket Prize"
+            value={ticketPrizeTmp}
+            onChange={(e) => {
+              setTicketPrizeTmp(e.target.value ? e.target.value : undefined);
+            }}
+          />
+        </div>
       </div>
       <div className={styles.frameDiv3}>
         <div className={styles.frameDiv6}>
           <b className={styles.teams}>Teams</b>
           <button className={styles.clickToDepositRewards}>
-            {" "}
             🎁 Click to deposit rewards
           </button>
         </div>
@@ -183,7 +196,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
           <input
             className={styles.frameInput3}
             type="text"
-            placeholder="ENTER TEAM NAME"
+            placeholder="Enter a New Team Name"
             value={teamNameTmp}
             onChange={(e) => {
               setTeamNameTmp(e.target.value ? e.target.value : "");
@@ -243,8 +256,8 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
         <button className={styles.frameButton3} onClick={onEdit}>
           <b className={styles.sAVECHANGES}>SAVE CHANGES</b>
         </button>
-        <button className={styles.cancel} onClick={props.onFormCancel}>
-          cancel
+        <button className={styles.ghostButton} onClick={props.onFormCancel}>
+          <i className={styles.lightText}>cancel</i>
         </button>
       </div>
     </div>

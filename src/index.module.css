@@ -16,6 +16,7 @@ body {
   /* fonts */
   --font-inter: Inter;
   --font-fira-sans: "Fira Sans";
+  --font-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* font sizes */
   --font-size-base: 14px;

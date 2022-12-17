@@ -75,7 +75,7 @@
   background-color: var(--color-gray-100);
   border-radius: var(--br-sm);
   flex-direction: row;
-  padding: var(--padding-sm) 0;
+  padding: var(--padding-sm) var(--padding-2xs) var(--padding-sm) 0;
   justify-content: center;
 }
 .frameInput,
@@ -131,7 +131,7 @@
   flex: 1;
   border-radius: var(--br-sm);
   flex-direction: row;
-  padding: var(--padding-sm) 0;
+  padding: var(--padding-sm) var(--padding-2xs);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -264,4 +264,37 @@
 }
 .bottomWhitespace {
   padding-bottom: 180px;
+}
+.inputWrapper {
+  display: flex;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-300);
+  padding: 0 var(--padding-2xs);
+  white-space: nowrap;
+}
+.inputSkeleton {
+  flex: 1;
+  border: 0;
+  font-family: var(--font-inter);
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-500);
+  background-color: var(--color-gray-100);
+  border-radius: var(--br-sm);
+}
+.ghostButton {
+  background-color: transparent;
+  border: 0;
+}
+.lightText {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  line-height: var(--font-size-lg);
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-gray-300);
 }

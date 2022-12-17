@@ -247,8 +247,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
         </button>
       </div> */}
       {user && !user.isAnonymous && (
-        <button className={styles.frameButton2} onClick={handleSignOut}>
-          <i className={styles.cancel}>sign out</i>
+        <button className={styles.ghostButton} onClick={handleSignOut}>
+          <i className={styles.lightText}>sign out</i>
         </button>
       )}
     </div>

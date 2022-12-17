@@ -1,19 +1,16 @@
 .fanTicketsPoweredBy,
 .lOOTBOX {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   display: inline-block;
 }
 .lOOTBOX {
-  left: 164px;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   font-family: var(--font-fira-sans);
 }
 .groupDiv {
   position: relative;
-  width: 252px;
-  height: 19px;
   flex-shrink: 0;
 }
 .frameDivUnverified {
@@ -21,7 +18,7 @@
   background-color: var(--color-yellow);
   display: flex;
   flex-direction: column;
-  padding: var(--padding-4xs) var(--padding-md);
+  padding: var(--padding-4xs) var(--padding-xs);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -31,7 +28,7 @@
   background-color: var(--color-teal);
   display: flex;
   flex-direction: column;
-  padding: var(--padding-4xs) var(--padding-3xl);
+  padding: var(--padding-4xs) var(--padding-sm);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -195,4 +192,30 @@
 }
 .warningText {
   color: var(--color-red);
+  font-family: var(--font-sans-serif);
+  font-weight: 500;
+}
+.ghostButton {
+  background-color: transparent;
+  border: 0;
+}
+.lightText {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  line-height: var(--font-size-lg);
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-gray-300);
+}
+.fanTicketsPoweredBy {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  /* line-height: var(--font-size-lg); */
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-white);
 }

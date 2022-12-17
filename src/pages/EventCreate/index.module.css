@@ -1,19 +1,14 @@
 .fanTicketsPoweredBy,
 .lOOTBOX {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   display: inline-block;
 }
 .lOOTBOX {
-  left: 164px;
   font-size: var(--font-size-lg);
   font-family: var(--font-fira-sans);
 }
 .groupDiv {
   position: relative;
-  width: 252px;
-  height: 19px;
   flex-shrink: 0;
 }
 .frameDiv {
@@ -21,7 +16,7 @@
   background-color: var(--color-teal);
   display: flex;
   flex-direction: column;
-  padding: var(--padding-3xs) var(--padding-xl);
+  padding: var(--padding-3xs) var(--padding-sm);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -166,4 +161,14 @@
 .loadingContainer {
   height: 315px;
   width: 100%;
+}
+.fanTicketsPoweredBy {
+  font-family: var(--font-sans-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+  /* line-height: var(--font-size-lg); */
+  /* identical to box height */
+  text-align: center;
+  color: var(--color-white);
 }

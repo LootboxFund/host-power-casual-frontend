@@ -42,6 +42,10 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
     });
   };
 
+  const toggleAdvancedSettings = () => {
+    setIsAdvancedSettingsOpen(!isAdvancedSettingsOpen);
+  };
+
   const onCreateEvent = async () => {
     if (loading) {
       return;
@@ -93,32 +97,44 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
           <b className={styles.b1}>+</b>
         </button>
       </div>
-      <input
-        className={styles.frameInput1}
-        type="text"
-        placeholder="EVENT NAME"
-        onChange={(e) => {
-          setEventName(e.target.value ? e.target.value : undefined);
-        }}
-      />
-      <input
-        className={styles.frameInput1}
-        type="number"
-        placeholder="TICKETS PER TEAM"
-        onChange={(e) => {
-          setMaxTickets(
-            e.target.valueAsNumber ? e.target.valueAsNumber : undefined
-          );
-        }}
-      />
-      <input
-        className={styles.frameInput1}
-        type="text"
-        placeholder="TICKET PRIZE"
-        onChange={(e) => {
-          setTicketPrize(e.target.value ? e.target.value : undefined);
-        }}
-      />
+
+      {isAdvancedSettingsOpen ? (
+        [
+          <input
+            key="input1"
+            className={styles.frameInput1}
+            type="text"
+            placeholder="EVENT NAME"
+            onChange={(e) => {
+              setEventName(e.target.value ? e.target.value : undefined);
+            }}
+          />,
+          <input
+            key="input2"
+            className={styles.frameInput1}
+            type="number"
+            placeholder="TICKETS PER TEAM"
+            onChange={(e) => {
+              setMaxTickets(
+                e.target.valueAsNumber ? e.target.valueAsNumber : undefined
+              );
+            }}
+          />,
+          <input
+            key="input3"
+            className={styles.frameInput1}
+            type="text"
+            placeholder="TICKET PRIZE"
+            onChange={(e) => {
+              setTicketPrize(e.target.value ? e.target.value : undefined);
+            }}
+          />,
+        ]
+      ) : (
+        <button className={styles.ghostButton} onClick={toggleAdvancedSettings}>
+          <i className={styles.lightText}>Additional Settings</i>
+        </button>
+      )}
 
       <div className={styles.whitespace} />
 
@@ -131,15 +147,14 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
           <b className={styles.cREATEEVENT}>CREATE EVENT</b>
         </button>
 
-        <button
-          className={styles.xterrangmailcomClickToCh}
-          onClick={props.onOpenAuthModal}
-        >
-          {user?.isAnonymous
-            ? "Unverified User (click to login)"
-            : user?.email
-            ? `${user.email} (click to change)`
-            : "Click to login"}
+        <button className={styles.ghostButton} onClick={props.onOpenAuthModal}>
+          <i className={styles.lightText}>
+            {user?.isAnonymous
+              ? "Unverified User (click to login)"
+              : user?.email
+              ? `${user.email} (click to change)`
+              : "Click to login"}
+          </i>
         </button>
       </div>
     </div>

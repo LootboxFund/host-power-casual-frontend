@@ -133,7 +133,9 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
           onConfirm={handleRemoveLootboxFromEvent}
           okType="danger"
         >
-          <button className={styles.removeTeam}>remove team</button>
+          <button className={styles.ghostButton}>
+            <i className={styles.lightText}>remove team</i>
+          </button>
         </Popconfirm>
       </div>
     </div>

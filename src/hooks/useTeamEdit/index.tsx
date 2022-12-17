@@ -14,6 +14,8 @@ import { LootboxTournamentSnapshotID, TournamentID } from "@wormgraph/helpers";
 export interface AddTeamPayload {
   eventID: TournamentID;
   teamName?: string;
+  nftBountyValue?: string;
+  maxTickets?: number;
 }
 
 export interface RemoveTeamPayload {
@@ -38,6 +40,8 @@ const useTeamEdit = () => {
         payload: {
           tournamentID: payload.eventID,
           name: payload.teamName,
+          nftBountyValue: payload.nftBountyValue,
+          maxTickets: payload.maxTickets,
         },
       },
     });
