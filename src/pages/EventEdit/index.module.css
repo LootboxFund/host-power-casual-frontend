@@ -27,6 +27,7 @@
 }
 .frameDiv3 {
   display: inline-block;
+  cursor: pointer;
   /* display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,4 +85,20 @@
   /* identical to box height */
   text-align: center;
   color: var(--color-gray-300);
+}
+
+.frameDivUnverified {
+  align-self: stretch;
+  background-color: var(--color-yellow);
+  display: flex;
+  flex-direction: column;
+  padding: var(--padding-4xs) var(--padding-xs);
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+.warningText {
+  color: var(--color-red);
+  font-family: var(--font-sans-serif);
+  font-weight: 500;
 }

@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { Alert, message, Tooltip } from "antd";
 import { EmailAuthProvider } from "firebase/auth";
 import { FunctionComponent, useEffect, useState } from "react";
 import { auth } from "../../api/firebase";
@@ -11,10 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { parseAuthError } from "../../lib/firebase";
 
 type LoginMode = "email-link" | "email-password";
+type AuthFlowType = "login" | "signup";
 
 interface LoginFormProps {
   onLoginCallback: (user: FrontendUser) => void;
   onSignOutCallback?: () => void;
+  initFlow?: AuthFlowType;
 }
 
 const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
@@ -31,14 +33,9 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-
-  // const toggleLoginMode = () => {
-  //   if (loginMode === "email-link") {
-  //     setLoginMode("email-password");
-  //   } else {
-  //     setLoginMode("email-link");
-  //   }
-  // };
+  const [authFlowType, setAuthFlowType] = useState<AuthFlowType>(
+    props.initFlow || "signup"
+  );
 
   useEffect(() => {
     return () => {
@@ -47,6 +44,91 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
       setPassword("");
     };
   }, []);
+
+  const handleSignUp = async () => {
+    if (loading) {
+      return;
+    }
+    if (!email) {
+      message.error("Please enter your email address");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      message.error("Please enter a valid email address");
+      return;
+    }
+    if (!password) {
+      message.error("Please enter your password");
+      return;
+    }
+    if (password !== passwordConfirm) {
+      message.error("Passwords do not match");
+      return;
+    }
+
+    const loadingMessage = message.loading("Creating your account...", 0);
+
+    // See if that user exists
+    let emailSignInMethods: string[] = [];
+    setLoading(true);
+    try {
+      emailSignInMethods = await fetchSignInMethodsForEmail(auth, email);
+    } catch (err) {
+      console.log("error fethcing sign in methods");
+      message.error("An error occured. Please try again later.");
+      loadingMessage();
+      setLoading(false);
+      return;
+    }
+
+    if (emailSignInMethods.length > 0) {
+      // User already exists
+      message.error("An account with that email already exists");
+      loadingMessage();
+      setLoading(false);
+      return;
+    }
+
+    let loggedInUser: FrontendUser;
+    try {
+      // New user
+      if (user?.isAnonymous) {
+        loggedInUser = await linkAnonAccountWithCredential(
+          EmailAuthProvider.credential(email, password)
+        );
+      } else {
+        // This is a logged in  NON anonymous user (or logged out) user.
+        // For breivity, we just
+        // - logout
+        // - signInAnonymously
+        // - linkAnonAccountWithCredential
+
+        await logout();
+        await signInAnonymously(email);
+        loggedInUser = await linkAnonAccountWithCredential(
+          EmailAuthProvider.credential(email, password)
+        );
+        navigate("/");
+      }
+    } catch (err: any) {
+      console.log("error logging in", err);
+      message.error(
+        parseAuthError(
+          err?.message || "An error occured. Please try again later."
+        )
+      );
+      return;
+    } finally {
+      setLoading(false);
+      loadingMessage();
+    }
+
+    message.success(`Welcome ${loggedInUser?.username || "Friend"}!`);
+
+    props.onLoginCallback(loggedInUser);
+
+    return;
+  };
 
   const handleLogin = async () => {
     if (loading) {
@@ -81,41 +163,27 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
     }
 
     let loggedInUser: FrontendUser;
-    const isNewUser = emailSignInMethods.length === 0;
+
+    if (emailSignInMethods.length === 0) {
+      // User does not exist
+      message.error("Invalid email or password");
+      loadingMessage();
+      setLoading(false);
+      return;
+    }
 
     try {
-      if (!isNewUser) {
-        // Existing user - we just log them in
+      // Existing user - we just log them in
 
-        if (emailSignInMethods.includes("password")) {
-          // We only support password for now
-          // WARNING: for now they will loose this event
-          loggedInUser = await signInWithEmailAndPassword(email, password);
-        } else {
-          // Existing user with a different method
-          // Right now we dont support other login methods
-          throw new Error("Please try again with a new email");
-        }
+      if (emailSignInMethods.includes("password")) {
+        // We only support password for now
+        // WARNING: for now they will loose this event
+        loggedInUser = await signInWithEmailAndPassword(email, password);
+        navigate("/");
       } else {
-        // New user
-        if (user?.isAnonymous) {
-          loggedInUser = await linkAnonAccountWithCredential(
-            EmailAuthProvider.credential(email, password)
-          );
-        } else {
-          // This is a logged in  NON anonymous user (or logged out) user.
-          // For breivity, we just
-          // - logout
-          // - signInAnonymously
-          // - linkAnonAccountWithCredential
-
-          await logout();
-          await signInAnonymously(email);
-          loggedInUser = await linkAnonAccountWithCredential(
-            EmailAuthProvider.credential(email, password)
-          );
-          navigate("/");
-        }
+        // Existing user with a different method
+        // Right now we dont support other login methods
+        throw new Error("Please add a password to your account to sign in.");
       }
     } catch (err: any) {
       console.log("error logging in", err);
@@ -130,31 +198,11 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
       loadingMessage();
     }
 
+    message.success(`Welcome ${loggedInUser?.username || "Friend"}!`);
     props.onLoginCallback(loggedInUser);
 
     return;
   };
-
-  // if (!!user && !user.isAnonymous) {
-  //   return (
-  //     <div className={styles.frameDiv}>
-  //       <Result
-  //         status="info"
-  //         title="You're Already Logged In"
-  //         subTitle={
-  //           <>
-  //             Do you want to sign out to make a new account?
-  //             <br />
-  //             <br />
-  //             <Button type="primary" onClick={handleLogout}>
-  //               Sign Out
-  //             </Button>
-  //           </>
-  //         }
-  //       ></Result>
-  //     </div>
-  //   );
-  // }
 
   const handleSignOut = async () => {
     try {
@@ -169,15 +217,39 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
     props.onSignOutCallback?.();
   };
 
-  const isUserLoggedInAndNotAnon = !!user && !user.isAnonymous;
+  const toggleAuthType = () => {
+    if (authFlowType === "signup") {
+      setAuthFlowType("login");
+    } else {
+      setAuthFlowType("signup");
+    }
+  };
+
+  const authHandler = async () => {
+    if (authFlowType === "signup") {
+      return handleSignUp();
+    } else {
+      return handleLogin();
+    }
+  };
 
   return (
     <div className={styles.frameDiv}>
       <div className={styles.frameDiv1}>
         <b className={styles.loginToLootbox}>
-          {isUserLoggedInAndNotAnon ? "Create New Account" : "Login to Lootbox"}
+          {authFlowType === "signup"
+            ? "Create New Account"
+            : "Login to Lootbox"}
         </b>
       </div>
+      {authFlowType === "login" && !!user && user.isAnonymous && (
+        <Tooltip title="If you made an event as an unverified user, you will loose access to it once you log into an existing account. You can either A) create a new account with a new email or B) create a new event after loggin into your account.">
+          <Alert
+            message="Logging into an existing account will loose any work done as an unverified user."
+            type="warning"
+          />
+        </Tooltip>
+      )}
       <div className={styles.frameDiv2}>
         <input
           value={email}
@@ -185,9 +257,10 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
           className={styles.frameInput}
           type="text"
           placeholder="Email"
+          name="email"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleLogin();
+              authHandler();
             }
           }}
         />
@@ -203,42 +276,54 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
             placeholder="Password"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleLogin();
+                authHandler();
               }
             }}
           />
         </div>
       )}
 
-      {/* {isUserLoggedInAndNotAnon && loginMode === "email-password" && (
+      {loginMode === "email-password" && authFlowType === "signup" && (
         <div className={styles.frameDiv2}>
           <input
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
             className={styles.frameInput}
             type="password"
-            name="password"
             placeholder="Confirm Password"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleLogin();
+                authHandler();
               }
             }}
           />
         </div>
-      )} */}
+      )}
 
       <div className={styles.frameDiv2}>
         <button
           className={styles.frameButton}
-          onClick={handleLogin}
+          onClick={authHandler}
           disabled={loading}
         >
-          <b className={styles.next}>
-            {loginMode === "email-link" ? "Send Login Email" : "Login"}
-          </b>
+          {authFlowType === "signup" ? (
+            <b className={styles.next}>Sign Up</b>
+          ) : (
+            <b className={styles.next}>
+              {loginMode === "email-link" ? "Send Login Email" : "Login"}
+            </b>
+          )}
         </button>
       </div>
+
+      <button className={styles.ghostButton} onClick={toggleAuthType}>
+        <i className={styles.lightText}>
+          {authFlowType === "signup"
+            ? "Already have an account? Log in."
+            : "Don't have an account? Sign up."}
+        </i>
+      </button>
+
       {/* <div className={styles.frameDiv2}>
         <button className={styles.frameButton1} onClick={toggleLoginMode}>
           <div className={styles.useAPassword}>
@@ -247,8 +332,12 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
         </button>
       </div> */}
       {user && !user.isAnonymous && (
-        <button className={styles.ghostButton} onClick={handleSignOut}>
-          <i className={styles.lightText}>sign out</i>
+        <button
+          className={styles.ghostButton}
+          onClick={handleSignOut}
+          style={{ marginTop: "12px" }}
+        >
+          <i className={styles.lightText}>Sign out</i>
         </button>
       )}
     </div>

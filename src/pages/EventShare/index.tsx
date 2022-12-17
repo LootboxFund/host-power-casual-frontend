@@ -56,7 +56,6 @@ const EventShare: FunctionComponent = () => {
 
   const loginCallback = (user: FrontendUser) => {
     closeAuthModal();
-    message.success(`Welcome ${user.username}!`);
   };
 
   if (!state.referral) {

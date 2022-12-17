@@ -16,15 +16,19 @@ import LootboxEditForm, {
 } from "../../components/LootboxEditForm";
 import useTeamEdit from "../../hooks/useTeamEdit";
 import { manifest } from "../../manifest";
+import { useAuth } from "../../hooks/useAuth";
+import LoginForm from "../../components/LoginForm";
 
 export interface EventEditNavigationState {
   referral?: ReferralFE;
 }
 
 const EventEdit: FunctionComponent = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedLootbox, setSelectedLootbox] = useState<LootboxFE | null>(
     null
   );
+  const { user } = useAuth();
   const [isEditLootboxModalOpen, setIsEditLootboxModalOpen] = useState(false);
   const navigate = useNavigate();
   let { id: eventID } = useParams();
@@ -62,6 +66,17 @@ const EventEdit: FunctionComponent = () => {
     refetchEvent();
     refetchLootboxes();
     return;
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+  const loginCallback = () => {
+    closeAuthModal();
+  };
+  const openAuthModel = () => {
+    setIsAuthModalOpen(true);
   };
 
   const handleOpenTeamSettings = (lootbox: LootboxFE) => {
@@ -118,26 +133,34 @@ const EventEdit: FunctionComponent = () => {
 
   return (
     <div className={styles.eventViewEditSettings}>
-      <a
-        href={
-          !event
-            ? `${manifest.microfrontends.dashboard.promoter}`
-            : `${manifest.microfrontends.dashboard.promoter}/dashboard/events/id/${event.id}`
-        }
-        className={styles.hrefAdvanced}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <div className={styles.frameDiv}>
-          <div className={styles.frameDiv1}>
-            <i className={styles.switchToAdvancedMode}>
-              Switch to Advanced Mode
-            </i>
-          </div>
+      {user?.isAnonymous ? (
+        <div className={styles.frameDivUnverified} onClick={openAuthModel}>
+          <i className={styles.warningText}>
+            ⚠️ Don't lose your event! Click to add your email
+          </i>
         </div>
-      </a>
+      ) : (
+        <a
+          href={
+            !event
+              ? `${manifest.microfrontends.dashboard.promoter}`
+              : `${manifest.microfrontends.dashboard.promoter}/dashboard/events/id/${event.id}`
+          }
+          className={styles.hrefAdvanced}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div className={styles.frameDiv}>
+            <div className={styles.frameDiv1}>
+              <i className={styles.switchToAdvancedMode}>
+                Switch to Advanced Mode
+              </i>
+            </div>
+          </div>
+        </a>
+      )}
       <div className={styles.frameDiv2}>
-        <div className={styles.frameDiv3}>
+        <div className={styles.frameDiv3} onClick={navigateBack}>
           <b className={styles.switchToAdvancedMode}>👈</b>
           &nbsp;
           <i className={styles.lightText}>
@@ -192,6 +215,15 @@ const EventEdit: FunctionComponent = () => {
             editLootbox={handleEditLootbox}
           />
         )}
+      </Modal>
+      <Modal
+        open={isAuthModalOpen}
+        onCancel={closeAuthModal}
+        bodyStyle={{ overflowX: "scroll" }}
+        okButtonProps={{ style: { display: "none" } }}
+        destroyOnClose={true}
+      >
+        <LoginForm onLoginCallback={loginCallback} />
       </Modal>
     </div>
   );

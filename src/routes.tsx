@@ -29,7 +29,7 @@ const router = createBrowserRouter(
     {
       path: "/edit/:id",
       element: (
-        <RequireAuth redirectTo="/login">
+        <RequireAuth redirectTo="/">
           <EventEdit />
         </RequireAuth>
       ),
@@ -38,7 +38,7 @@ const router = createBrowserRouter(
     {
       path: "/share/:id",
       element: (
-        <RequireAuth redirectTo="/login">
+        <RequireAuth redirectTo="/">
           <EventShare />
         </RequireAuth>
       ),
