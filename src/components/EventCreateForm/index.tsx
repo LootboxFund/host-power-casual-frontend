@@ -129,6 +129,13 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
               setTicketPrize(e.target.value ? e.target.value : undefined);
             }}
           />,
+          <button
+            className={styles.ghostButton}
+            onClick={toggleAdvancedSettings}
+            key="closebutton"
+          >
+            <i className={styles.lightText}>Close</i>
+          </button>,
         ]
       ) : (
         <button className={styles.ghostButton} onClick={toggleAdvancedSettings}>

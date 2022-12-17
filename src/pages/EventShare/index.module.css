@@ -198,6 +198,7 @@
 .ghostButton {
   background-color: transparent;
   border: 0;
+  cursor: pointer;
 }
 .lightText {
   font-family: var(--font-sans-serif);

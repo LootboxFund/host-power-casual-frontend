@@ -138,10 +138,10 @@ const EventEdit: FunctionComponent = () => {
       </a>
       <div className={styles.frameDiv2}>
         <div className={styles.frameDiv3}>
-          <b className={styles.switchToAdvancedMode}>🏰</b>
+          <b className={styles.switchToAdvancedMode}>👈</b>
           &nbsp;
           <i className={styles.lightText}>
-            {event?.title || "Epic Battle Event"} (simple settings)
+            {event?.title || "Epic Battle Event"} (click to go back)
           </i>
         </div>
       </div>

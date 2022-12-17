@@ -196,7 +196,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
           <input
             className={styles.frameInput3}
             type="text"
-            placeholder="Enter a New Team Name"
+            placeholder="Enter a new team name"
             value={teamNameTmp}
             onChange={(e) => {
               setTeamNameTmp(e.target.value ? e.target.value : "");
