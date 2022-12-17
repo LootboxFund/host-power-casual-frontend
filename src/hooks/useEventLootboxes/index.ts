@@ -40,6 +40,7 @@ const useEventLootboxes = (
               nftBountyValue: snap.lootbox.nftBountyValue,
               maxTickets: snap.lootbox.maxTickets,
               name: snap.lootbox.name,
+              snapshotID: snap.id,
             };
           }
         )

@@ -1,5 +1,6 @@
 import {
   LootboxID,
+  LootboxTournamentSnapshotID,
   ReferralID,
   ReferralSlug,
   TournamentID,
@@ -21,6 +22,7 @@ export interface LootboxFE {
   name: string;
   nftBountyValue: string;
   maxTickets: number;
+  snapshotID: LootboxTournamentSnapshotID;
 }
 
 export interface FrontendUser {

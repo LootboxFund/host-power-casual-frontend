@@ -31,6 +31,11 @@ export interface EditEventResponseSuccessFE {
   lootboxes: LootboxFE[];
 }
 
+export interface AddTeamPayload {
+  eventID: TournamentID;
+  teamName: string;
+}
+
 const useEventEdit = () => {
   const [editEventMutation, { loading: loadingEventEdit }] = useMutation<
     EditEventResponseFE,

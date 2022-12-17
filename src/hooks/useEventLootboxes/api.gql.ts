@@ -11,6 +11,7 @@ export interface ViewEventLootboxesAsOrganizerResponseFE {
         __typename: "ViewTournamentAsOrganizerResponseSuccess";
         tournament: {
           lootboxSnapshots: {
+            id: LootboxTournamentSnapshotID;
             lootbox: {
               id: LootboxID;
               name: string;
@@ -36,6 +37,7 @@ export const VIEW_EVENT_LOOTBOXES_AS_ORGANIZER = gql`
       ... on ViewTournamentAsOrganizerResponseSuccess {
         tournament {
           lootboxSnapshots {
+            id
             lootbox {
               id
               name

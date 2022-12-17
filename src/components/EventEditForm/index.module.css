@@ -154,7 +154,7 @@
 .frameButton1 {
   cursor: pointer;
   border: 0;
-  padding: var(--padding-2xs) var(--padding-xs);
+  padding: var(--padding-4xs) var(--padding-xs);
   background-color: var(--color-gray-100);
   border-radius: var(--br-sm);
   box-sizing: border-box;

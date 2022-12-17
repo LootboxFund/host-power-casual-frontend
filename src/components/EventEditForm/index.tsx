@@ -1,6 +1,5 @@
 import { LootboxID, TournamentID } from "@wormgraph/helpers";
 import { message, Result, Spin } from "antd";
-import { OmitProps } from "antd/es/transfer/ListBody";
 import { FunctionComponent, useEffect, useState } from "react";
 import { EventFE, LootboxFE } from "../../lib/types";
 import styles from "./index.module.css";
@@ -15,6 +14,11 @@ export interface OnEditEventFormPayload {
   }[];
 }
 
+export interface AddTeamPayload {
+  eventID: TournamentID;
+  teamName?: string;
+}
+
 interface EventViewEditSettingsProps {
   event: EventFE;
   lootboxes: LootboxFE[];
@@ -22,12 +26,15 @@ interface EventViewEditSettingsProps {
   onFormCancel?: () => void;
   onEdit: (payload: OnEditEventFormPayload) => Promise<void>;
   onOpenTeamSettings: (lootbox: LootboxFE) => void;
+  addTeam: (payload: AddTeamPayload) => Promise<void>;
 }
 
 const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
   props
 ) => {
+  const [teamNameTmp, setTeamNameTmp] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [loadingAddLootbox, setLoadingAddLootbox] = useState(false);
   const [eventNameTmp, setEventNameTmp] = useState<string | undefined>(
     props.event.title
   );
@@ -52,7 +59,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
   const onEdit = async () => {
     console.log("edit event");
 
-    if (loading) {
+    if (loading || loadingAddLootbox) {
       return;
     }
 
@@ -99,6 +106,30 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
     } finally {
       loadingMessage();
       setLoading(false);
+    }
+
+    return;
+  };
+
+  const handleAddTeamToEvent = async () => {
+    if (loading || loadingAddLootbox) {
+      return;
+    }
+
+    const loadingMessage = message.loading("Adding team to event...", 0);
+    setLoadingAddLootbox(true);
+    try {
+      await props.addTeam({
+        eventID: props.event.id,
+        teamName: teamNameTmp,
+      });
+      message.success("Team added to event!", 2);
+      setTeamNameTmp("");
+    } catch (err: any) {
+      message.error(err.message);
+    } finally {
+      loadingMessage();
+      setLoadingAddLootbox(false);
     }
 
     return;
@@ -152,10 +183,22 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
           <input
             className={styles.frameInput3}
             type="text"
-            placeholder="ADD TEAM"
+            placeholder="ENTER TEAM NAME"
+            value={teamNameTmp}
+            onChange={(e) => {
+              setTeamNameTmp(e.target.value ? e.target.value : "");
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleAddTeamToEvent();
+              }
+            }}
           />
-          <button className={styles.frameButton1}>
-            <b className={styles.b1}>➕</b>
+          <button
+            className={styles.frameButton1}
+            onClick={handleAddTeamToEvent}
+          >
+            <b className={styles.b1}>{loadingAddLootbox ? <Spin /> : "➕"}</b>
           </button>
         </div>
         {props.loadingLootboxes && (
@@ -171,7 +214,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
               <input
                 className={styles.frameInput3}
                 type="text"
-                placeholder="TEAM #1"
+                placeholder="TEAM COMPETITOR"
                 value={team.name}
                 onChange={(e) => {
                   setLootboxesTmp((prev) => {

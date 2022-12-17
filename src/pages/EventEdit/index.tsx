@@ -2,15 +2,17 @@ import { FunctionComponent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EventEditForm, {
   OnEditEventFormPayload,
+  AddTeamPayload,
 } from "../../components/EventEditForm";
 import { LootboxFE, ReferralFE } from "../../lib/types";
 import useEventEdit from "../../hooks/useEventEdit";
 import styles from "./index.module.css";
 import useEvent from "../../hooks/useEvent";
-import { TournamentID } from "@wormgraph/helpers";
+import { LootboxTournamentSnapshotID, TournamentID } from "@wormgraph/helpers";
 import { Button, Result, Spin, Modal } from "antd";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
 import LootboxEditForm from "../../components/LootboxEditForm";
+import useTeamEdit from "../../hooks/useTeamEdit";
 
 export interface EventEditNavigationState {
   referral?: ReferralFE;
@@ -41,6 +43,8 @@ const EventEdit: FunctionComponent = () => {
 
   const { editEvent } = useEventEdit();
 
+  const { addTeam, removeTeam } = useTeamEdit();
+
   const navigateBack = () => {
     navigate(-1);
   };
@@ -65,6 +69,31 @@ const EventEdit: FunctionComponent = () => {
   const closeTeamSettings = () => {
     setSelectedLootbox(null);
     setIsEditLootboxModalOpen(false);
+  };
+
+  const handleAddTeamToEvent = async (
+    payload: AddTeamPayload
+  ): Promise<void> => {
+    await addTeam(payload);
+
+    refetchLootboxes();
+    return;
+  };
+
+  const handleRemoveTeamFromEvent = async (
+    eventID: TournamentID,
+    snapshotID: LootboxTournamentSnapshotID
+  ): Promise<void> => {
+    await removeTeam({
+      eventID: eventID,
+      lootboxTournamentSnapshotID: snapshotID,
+    });
+
+    refetchLootboxes();
+
+    closeTeamSettings();
+
+    return;
   };
 
   return (
@@ -98,6 +127,7 @@ const EventEdit: FunctionComponent = () => {
           onEdit={handleEditEvent}
           onFormCancel={navigateBack}
           onOpenTeamSettings={handleOpenTeamSettings}
+          addTeam={handleAddTeamToEvent}
         />
       ) : !!error ? (
         <div className={styles.loadingContainer}>
@@ -120,7 +150,13 @@ const EventEdit: FunctionComponent = () => {
         bodyStyle={{ overflowX: "scroll" }}
         okButtonProps={{ style: { display: "none" } }}
       >
-        {selectedLootbox && <LootboxEditForm lootbox={selectedLootbox} />}
+        {selectedLootbox && event && (
+          <LootboxEditForm
+            eventID={event.id as TournamentID}
+            lootbox={selectedLootbox}
+            removeFromEvent={handleRemoveTeamFromEvent}
+          />
+        )}
       </Modal>
     </div>
   );
