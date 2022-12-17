@@ -12,6 +12,7 @@
   font-weight: 700;
   color: var(--color-gray-500);
   text-align: center;
+  width: 100%;
 }
 .frameDiv1 {
   align-self: stretch;
@@ -19,10 +20,11 @@
   background-color: var(--color-gray-100);
   display: flex;
   flex-direction: row;
-  padding: var(--padding-xs) var(--padding-md);
+  padding: var(--padding-xs) var(--padding-sm);
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 .sAVECHANGES {
   position: relative;
@@ -74,6 +76,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 .removeTeam {
   cursor: pointer;
@@ -112,4 +115,8 @@
   font-size: var(--font-size-md);
   color: var(--color-gray-500);
   font-family: var(--font-inter);
+}
+.hrefAdvanced {
+  width: 100%;
+  text-decoration: none;
 }

@@ -1,12 +1,26 @@
-import { LootboxTournamentSnapshotID, TournamentID } from "@wormgraph/helpers";
+import {
+  LootboxID,
+  LootboxTournamentSnapshotID,
+  TournamentID,
+} from "@wormgraph/helpers";
 import { message, Popconfirm } from "antd";
 import { FunctionComponent, useState } from "react";
 import { LootboxFE } from "../../lib/types";
+import { manifest } from "../../manifest";
 import styles from "./index.module.css";
+
+export interface EditLootboxPayload {
+  name?: string;
+  lootboxID: LootboxID;
+}
 
 export interface LootboxEditFormProps {
   lootbox: LootboxFE;
   eventID: TournamentID;
+  editLootbox: (
+    eventID: TournamentID,
+    payload: EditLootboxPayload
+  ) => Promise<void>;
   removeFromEvent: (
     eventID: TournamentID,
     snapshotID: LootboxTournamentSnapshotID
@@ -44,6 +58,31 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
     return;
   };
 
+  const handleEditTeam = async () => {
+    if (loading) {
+      return;
+    }
+
+    const loadingMessage = message.loading("Editing team...", 0);
+    setLoading(true);
+    try {
+      await props.editLootbox(props.eventID, {
+        name: lootboxTmp.name,
+        lootboxID: lootboxTmp.id,
+      });
+      message.success("Team successfully edited!", 2);
+    } catch (err: any) {
+      message.error(err.message);
+    } finally {
+      loadingMessage();
+      setLoading(false);
+    }
+
+    return;
+  };
+
+  const lootboxURL = `${manifest.microfrontends.dashboard.promoter}/dashboard/lootbox/id/${props.lootbox.id}?tid=${props.eventID}`;
+
   return (
     <div className={styles.editLootboxModal}>
       <div className={styles.frameDiv}>
@@ -59,17 +98,36 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
                 return { ...prev, name: e.target.value };
               });
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleEditTeam();
+              }
+            }}
           />
         </div>
-        <button className={styles.frameButton1}>
+        <button className={styles.frameButton1} onClick={handleEditTeam}>
           <b className={styles.sAVECHANGES}>SAVE CHANGES</b>
         </button>
-        <button className={styles.frameButton3}>
-          <div className={styles.vIEWLOOTBOX}>VIEW LOOTBOX</div>
-        </button>
-        <button className={styles.frameButton3}>
-          <div className={styles.vIEWLOOTBOX}>🎁 DEPOSIT REWARDS</div>
-        </button>
+        <a
+          href={lootboxURL}
+          className={styles.hrefAdvanced}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button className={styles.frameButton3}>
+            <div className={styles.vIEWLOOTBOX}>VIEW LOOTBOX</div>
+          </button>
+        </a>
+        <a
+          href={`${manifest.microfrontends.dashboard.promoter}`}
+          className={styles.hrefAdvanced}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <button className={styles.frameButton3}>
+            <div className={styles.vIEWLOOTBOX}>🎁 DEPOSIT REWARDS</div>
+          </button>
+        </a>
         <Popconfirm
           title="Are you sure?"
           onConfirm={handleRemoveLootboxFromEvent}

@@ -62,3 +62,8 @@
   height: 315px;
   width: 100%;
 }
+.hrefAdvanced {
+  color: var(--color-white);
+  text-decoration: none;
+  width: 100%;
+}

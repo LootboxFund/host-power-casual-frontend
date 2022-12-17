@@ -11,8 +11,11 @@ import useEvent from "../../hooks/useEvent";
 import { LootboxTournamentSnapshotID, TournamentID } from "@wormgraph/helpers";
 import { Button, Result, Spin, Modal } from "antd";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
-import LootboxEditForm from "../../components/LootboxEditForm";
+import LootboxEditForm, {
+  EditLootboxPayload,
+} from "../../components/LootboxEditForm";
 import useTeamEdit from "../../hooks/useTeamEdit";
+import { manifest } from "../../manifest";
 
 export interface EventEditNavigationState {
   referral?: ReferralFE;
@@ -96,13 +99,43 @@ const EventEdit: FunctionComponent = () => {
     return;
   };
 
+  const handleEditLootbox = async (
+    eventID: TournamentID,
+    payload: EditLootboxPayload
+  ) => {
+    await editEvent({
+      id: eventID,
+      lootboxes: [
+        {
+          id: payload.lootboxID,
+          name: payload.name,
+        },
+      ],
+    });
+
+    refetchLootboxes();
+  };
+
   return (
     <div className={styles.eventViewEditSettings}>
-      <div className={styles.frameDiv}>
-        <div className={styles.frameDiv1}>
-          <i className={styles.switchToAdvancedMode}>Switch to Advanced Mode</i>
+      <a
+        href={
+          !event
+            ? `${manifest.microfrontends.dashboard.promoter}`
+            : `${manifest.microfrontends.dashboard.promoter}/dashboard/events/id/${event.id}`
+        }
+        className={styles.hrefAdvanced}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <div className={styles.frameDiv}>
+          <div className={styles.frameDiv1}>
+            <i className={styles.switchToAdvancedMode}>
+              Switch to Advanced Mode
+            </i>
+          </div>
         </div>
-      </div>
+      </a>
       <div className={styles.frameDiv2}>
         <div className={styles.frameDiv3}>
           <b className={styles.switchToAdvancedMode}>🏰</b>
@@ -155,6 +188,7 @@ const EventEdit: FunctionComponent = () => {
             eventID={event.id as TournamentID}
             lootbox={selectedLootbox}
             removeFromEvent={handleRemoveTeamFromEvent}
+            editLootbox={handleEditLootbox}
           />
         )}
       </Modal>
