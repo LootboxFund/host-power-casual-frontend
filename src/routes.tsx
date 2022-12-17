@@ -15,34 +15,39 @@ import {
 // auth guard
 import RequireAuth from "./components/RequireAuth";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      // NOTE: this does not need auth guard - anonymous users will get created
+      element: <EventCreate />,
+    },
+    {
+      path: "/login",
+      element: <LoginPage />,
+    },
+    {
+      path: "/edit/:id",
+      element: (
+        <RequireAuth redirectTo="/login">
+          <EventEdit />
+        </RequireAuth>
+      ),
+      errorElement: <EditEventPageError />,
+    },
+    {
+      path: "/share/:id",
+      element: (
+        <RequireAuth redirectTo="/login">
+          <EventShare />
+        </RequireAuth>
+      ),
+      errorElement: <ShareEventPageError />,
+    },
+  ],
   {
-    path: "/",
-    // NOTE: this does not need auth guard - anonymous users will get created
-    element: <EventCreate />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/edit/:id",
-    element: (
-      <RequireAuth redirectTo="/login">
-        <EventEdit />
-      </RequireAuth>
-    ),
-    errorElement: <EditEventPageError />,
-  },
-  {
-    path: "/share/:id",
-    element: (
-      <RequireAuth redirectTo="/login">
-        <EventShare />
-      </RequireAuth>
-    ),
-    errorElement: <ShareEventPageError />,
-  },
-]);
+    basename: "/host", // This app gets served at go.lootbox.fund/host/** */
+  }
+);
 
 export default router;

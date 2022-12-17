@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Running this deploys to a `/host` sub folder of the domain, i.e. go.lootbox.fund/host is the basedir from
+react-router-dom. Locally, you will need to go to http://localhost:3000/host.
+
 ## Available Scripts
 
 In the project directory, you can run:
