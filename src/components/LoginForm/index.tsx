@@ -243,7 +243,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
         </b>
       </div>
       {authFlowType === "login" && !!user && user.isAnonymous && (
-        <Tooltip title="If you made an event as an unverified user, you will loose access to it once you log into an existing account. You can either A) create a new account with a new email or B) create a new event after loggin into your account.">
+        <Tooltip title="If you made an event as an unverified user, you will loose access to it once you log into an existing account. You can either A) create a new account with a new email or B) create a new event after logging into your account.">
           <Alert
             message="Logging into an existing account will loose any work done as an unverified user."
             type="warning"
