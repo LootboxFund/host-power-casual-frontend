@@ -239,7 +239,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
         })}
         <div className={styles.bottomWhitespace} />
       </div>
-      <div className={styles.frameDiv9}>
+      <div className={styles.floatingButtonContainer}>
         <button className={styles.frameButton3} onClick={onEdit}>
           <b className={styles.sAVECHANGES}>SAVE CHANGES</b>
         </button>
