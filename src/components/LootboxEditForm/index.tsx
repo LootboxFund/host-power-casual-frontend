@@ -82,7 +82,7 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
     return;
   };
 
-  const lootboxURL = `${manifest.microfrontends.dashboard.promoter}/dashboard/lootbox/id/${props.lootbox.id}?tid=${props.eventID}`;
+  const lootboxURL = `${manifest.microfrontends.webflow.cosmicLootboxPage}?lid=${props.lootbox.id}`;
 
   return (
     <div className={styles.editLootboxModal}>
