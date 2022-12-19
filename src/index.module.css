@@ -19,7 +19,10 @@ body {
   --font-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* font sizes */
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
   --font-size-base: 14px;
+  --font-size-md: 14px;
   --font-size-lg: 16px;
   --font-size-xl: 24px;
   --font-size-2xl: 36px;
@@ -28,6 +31,7 @@ body {
 
   /* Colors */
   --color-white: #fff;
+  --color-gray-000: #fafafa;
   --color-gray-100: #efefef;
   --color-gray-200: #d8d8d8;
   --color-gray-300: #a7a7a7;

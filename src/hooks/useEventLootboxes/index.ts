@@ -44,6 +44,8 @@ const useEventLootboxes = (
               maxTickets: snap.lootbox.maxTickets,
               name: snap.lootbox.name,
               snapshotID: snap.id,
+              runningCompletedClaims: snap.lootbox.runningCompletedClaims,
+              description: snap.lootbox.description,
             };
           }
         )

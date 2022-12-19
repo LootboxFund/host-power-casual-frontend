@@ -25,6 +25,8 @@ export interface LootboxFE {
   maxTickets: number;
   snapshotID: LootboxTournamentSnapshotID;
   stampImage: string;
+  runningCompletedClaims: number;
+  description: string;
 }
 
 export interface FrontendUser {

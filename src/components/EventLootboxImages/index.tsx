@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { convertFilenameToThumbnail } from "../../lib/storage";
 import { LootboxFE } from "../../lib/types";
 import styles from "./index.module.css";
-import ImageWithReload from "./ImageWithReload";
+import ImageWithReload from "../ImageWithReload";
 import { MAX_IMAGES_SHOWN } from "./const";
 
 interface EventLootboxImagesProps {

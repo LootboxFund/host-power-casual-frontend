@@ -4,7 +4,7 @@ import {
   TournamentID,
 } from "@wormgraph/helpers";
 import { message, Popconfirm } from "antd";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { LootboxFE } from "../../lib/types";
 import { manifest } from "../../manifest";
 import styles from "./index.module.css";
@@ -38,6 +38,10 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
 ) => {
   const [lootboxTmp, setLootboxTmp] = useState<LootboxFE>(props.lootbox);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLootboxTmp(props.lootbox);
+  }, [props?.lootbox]);
 
   const handleRemoveLootboxFromEvent = async () => {
     if (loading) {

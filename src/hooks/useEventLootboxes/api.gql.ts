@@ -1,9 +1,5 @@
 import { gql } from "@apollo/client";
-import {
-  LootboxID,
-  LootboxTournamentSnapshotID,
-  TournamentID,
-} from "@wormgraph/helpers";
+import { LootboxID, LootboxTournamentSnapshotID } from "@wormgraph/helpers";
 
 export interface ViewEventLootboxesAsOrganizerResponseFE {
   viewTournamentAsOrganizer:
@@ -18,6 +14,8 @@ export interface ViewEventLootboxesAsOrganizerResponseFE {
               nftBountyValue: string;
               maxTickets: number;
               stampImage: string;
+              runningCompletedClaims: number;
+              description: string;
             };
           }[];
         };
@@ -44,6 +42,8 @@ export const VIEW_EVENT_LOOTBOXES_AS_ORGANIZER = gql`
               nftBountyValue
               maxTickets
               stampImage
+              runningCompletedClaims
+              description
             }
           }
         }

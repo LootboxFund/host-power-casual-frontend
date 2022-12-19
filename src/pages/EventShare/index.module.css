@@ -67,6 +67,23 @@
   padding: var(--padding-lg) 0;
   box-sizing: border-box;
 }
+.frameDiv1Padding {
+  display: flex;
+  align-self: stretch;
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: var(--padding-lg) var(--padding-md);
+  box-sizing: border-box;
+}
+.lootboxPreviewContainer {
+  display: flex;
+  align-self: stretch;
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: var(--padding-lg) var(--padding-xs);
+  box-sizing: border-box;
+  gap: var(--gap-lg);
+}
 .scanForFanTickets {
   position: relative;
   display: inline-block;

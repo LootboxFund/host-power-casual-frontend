@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { manifest } from "../../manifest";
 import { FrontendUser, ReferralFE } from "../../lib/types";
-import { message, Modal, Spin } from "antd";
+import { Button, message, Modal, Spin, Typography } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
 import { useAuth } from "../../hooks/useAuth";
 import EventQRCode from "../../components/EventQRCode";
@@ -14,6 +14,7 @@ import EventLootboxImages from "../../components/EventLootboxImages";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
 import { MAX_IMAGES_SHOWN } from "../../components/EventLootboxImages/const";
 import { EditOutlined } from "@ant-design/icons";
+import LootboxPreview from "../../components/LootboxPreview";
 
 export interface NavigationState {
   referral?: ReferralFE;
@@ -40,6 +41,7 @@ const EventShare: FunctionComponent = () => {
   const [isPolling, setIsPolling] = useState<boolean>(false);
   const hasPolledOnce = useRef<boolean>(false);
   const showSpinner = isPolling || loadingLootboxes;
+  const [isShowingAllLootboxes, setIsShowingAllLootboxes] = useState(false);
 
   useEffect(() => {
     // If event was created less than 5 minutes ago, start polling for lootboxes
@@ -78,7 +80,7 @@ const EventShare: FunctionComponent = () => {
     if (
       isPolling &&
       state?.nLootboxes &&
-      lootboxes.length >= Math.min(state.nLootboxes, MAX_IMAGES_SHOWN)
+      lootboxes.length >= state.nLootboxes
     ) {
       console.log("stop polling - cut off");
       stopPolling();
@@ -96,6 +98,10 @@ const EventShare: FunctionComponent = () => {
       referral: state.referral,
     };
     navigate(`/edit/${eventID}`, { state: navState });
+  };
+
+  const toggleListView = () => {
+    setIsShowingAllLootboxes(!isShowingAllLootboxes);
   };
 
   const closeAuthModal = () => {
@@ -152,12 +158,41 @@ const EventShare: FunctionComponent = () => {
         </button>
       </div>
       <EventQRCode referral={state.referral} />
+
+      <div className={styles.frameDiv1Padding}>
+        <Typography.Title
+          type="secondary"
+          style={{ textAlign: "start" }}
+          level={4}
+        >
+          How does it work?
+        </Typography.Title>
+        <p
+          className={styles.lightText}
+          style={{ fontStyle: "normal", textAlign: "start" }}
+        >
+          Fans scan the QR code to claim a FREE fan ticket. If their team wins,
+          fans will get a share of prize money.{" "}
+          <Typography.Link
+            href="/"
+            target="_blank"
+            className={styles.lightText}
+          >
+            Watch tutorial.
+          </Typography.Link>
+        </p>
+      </div>
+
       <div className={styles.frameDiv1}>
         <EventLootboxImages lootboxes={lootboxes} />
         {showSpinner ? (
           [
             <Spin key="spin-loading" />,
-            <div className={styles.frameDiv1} key="lootbox-loading-msg">
+            <div
+              className={styles.frameDiv1}
+              key="lootbox-loading-msg"
+              style={{ paddingBottom: "0px" }}
+            >
               <i className={styles.lightText}>
                 {isPolling
                   ? "Waiting for Lootboxes to be created..."
@@ -166,13 +201,36 @@ const EventShare: FunctionComponent = () => {
             </div>,
           ]
         ) : (
-          <div className={styles.frameDiv1}>
+          <div className={styles.frameDiv1} style={{ paddingBottom: "0px" }}>
             <button className={styles.ghostButton} onClick={navigateToEdit}>
               <i className={styles.lightText}>
                 Click to edit <EditOutlined />
               </i>
             </button>
           </div>
+        )}
+      </div>
+      <div className={styles.lootboxPreviewContainer}>
+        {lootboxes
+          .slice(0, isShowingAllLootboxes ? lootboxes.length : MAX_IMAGES_SHOWN)
+          .map((lootbox) => {
+            return (
+              <LootboxPreview
+                key={`lootboxPreview_${lootbox.id}`}
+                eventName={event?.title}
+                lootbox={lootbox}
+                onLootboxEditClick={navigateToEdit}
+              />
+            );
+          })}
+        {lootboxes.length > MAX_IMAGES_SHOWN && (
+          <Button
+            type="ghost"
+            onClick={toggleListView}
+            className={styles.lightText}
+          >
+            {isShowingAllLootboxes ? "Hide" : "Show more"}
+          </Button>
         )}
       </div>
 
