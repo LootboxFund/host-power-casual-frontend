@@ -7,6 +7,9 @@ export interface CreateEventResponseFE {
         tournament: {
           id: TournamentID;
           title: string;
+          timestamps: {
+            createdAt: number;
+          };
         };
         __typename: "CreateTournamentResponseSuccess";
       }
@@ -26,6 +29,9 @@ export const CREATE_EVENT = gql`
         tournament {
           id
           title
+          timestamps {
+            createdAt
+          }
         }
       }
       ... on ResponseError {

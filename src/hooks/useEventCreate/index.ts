@@ -72,6 +72,8 @@ const useEventCreate = () => {
       createdEvent = {
         id: eventResponse.data.createTournament.tournament.id,
         title: eventResponse.data.createTournament.tournament.title,
+        createdAt:
+          eventResponse.data.createTournament.tournament.timestamps.createdAt,
       };
     } else {
       throw new Error("An error occured!");

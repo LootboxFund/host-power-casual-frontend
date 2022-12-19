@@ -1,9 +1,9 @@
-import { FunctionComponent, useMemo, useState } from "react";
+import { FunctionComponent, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./index.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { manifest } from "../../manifest";
 import { FrontendUser, ReferralFE } from "../../lib/types";
-import { message, Modal } from "antd";
+import { message, Modal, Spin } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
 import { useAuth } from "../../hooks/useAuth";
 import EventQRCode from "../../components/EventQRCode";
@@ -12,9 +12,11 @@ import useEvent from "../../hooks/useEvent";
 import { TournamentID } from "@wormgraph/helpers";
 import EventLootboxImages from "../../components/EventLootboxImages";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
+import { MAX_IMAGES_SHOWN } from "../../components/EventLootboxImages/const";
 
 export interface NavigationState {
   referral?: ReferralFE;
+  nLootboxes?: number;
   onOpenAuthModal: () => void;
 }
 const EventShare: FunctionComponent = () => {
@@ -26,9 +28,58 @@ const EventShare: FunctionComponent = () => {
   const { event } = useEvent({
     eventID: (eventID || "") as TournamentID,
   });
-  const { lootboxes } = useEventLootboxes({
+  const {
+    lootboxes,
+    startPolling,
+    stopPolling,
+    loading: loadingLootboxes,
+  } = useEventLootboxes({
     eventID: (eventID || "") as TournamentID,
   });
+  const [isPolling, setIsPolling] = useState<boolean>(false);
+  const hasPolledOnce = useRef<boolean>(false);
+
+  useEffect(() => {
+    // If event was created less than 5 minutes ago, start polling for lootboxes
+    if (
+      !hasPolledOnce.current &&
+      state?.nLootboxes &&
+      !isPolling &&
+      event?.createdAt &&
+      Date.now() - event.createdAt < 5 * 60 * 1000 // event made within last 5 mins
+    ) {
+      setIsPolling(true);
+      // Poll every 5 seconds
+      console.log("start polling...");
+      startPolling(5000);
+      hasPolledOnce.current = true;
+      setTimeout(() => {
+        console.log("stop polling - timeout");
+        stopPolling();
+        setIsPolling(false);
+        // Stop polling after 1.5 minutes
+        // }, 1.5 * 60 * 1000);
+      }, 0.5 * 60 * 1000);
+    }
+  }, [
+    event?.createdAt,
+    startPolling,
+    stopPolling,
+    isPolling,
+    state?.nLootboxes,
+  ]);
+
+  useEffect(() => {
+    if (
+      isPolling &&
+      state?.nLootboxes &&
+      lootboxes.length >= Math.min(state.nLootboxes, MAX_IMAGES_SHOWN)
+    ) {
+      console.log("stop polling - cut off");
+      stopPolling();
+      setIsPolling(false);
+    }
+  }, [lootboxes, state?.nLootboxes, stopPolling, isPolling]);
 
   const inviteLink = useMemo(() => {
     return `${manifest.microfrontends.webflow.referral}?r=${state?.referral?.slug}`;
@@ -97,6 +148,16 @@ const EventShare: FunctionComponent = () => {
       <EventQRCode referral={state.referral} />
       <div className={styles.frameDiv1}>
         <EventLootboxImages lootboxes={lootboxes} />
+        {(isPolling || loadingLootboxes) && [
+          <Spin key="spin-loading" />,
+          <div className={styles.frameDiv1} key="lootbox-loading-msg">
+            <i className={styles.lightText}>
+              {isPolling
+                ? "Waiting for Lootboxes to be created..."
+                : "Loading Lootboxes..."}
+            </i>
+          </div>,
+        ]}
       </div>
       <div className={styles.whitespace} />
       <div className={styles.floatingButtonContainer}>

@@ -2,6 +2,8 @@ import { FunctionComponent } from "react";
 import { convertFilenameToThumbnail } from "../../lib/storage";
 import { LootboxFE } from "../../lib/types";
 import styles from "./index.module.css";
+import ImageWithReload from "./ImageWithReload";
+import { MAX_IMAGES_SHOWN } from "./const";
 
 interface EventLootboxImagesProps {
   lootboxes: LootboxFE[];
@@ -11,12 +13,12 @@ const EventLootboxImages: FunctionComponent<EventLootboxImagesProps> = (
 ) => {
   return (
     <div className={styles.cardHand}>
-      {props.lootboxes.slice(0, 5).map((lootbox) => {
+      {props.lootboxes.slice(0, MAX_IMAGES_SHOWN).map((lootbox) => {
         return (
-          <img
+          <ImageWithReload
             key={`thumbnail-${lootbox.id}`}
             alt={lootbox.name}
-            src={convertFilenameToThumbnail(lootbox.stampImage, "sm")}
+            imageUrl={convertFilenameToThumbnail(lootbox.stampImage, "sm")}
             className={styles.card}
           />
         );

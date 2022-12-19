@@ -14,12 +14,15 @@ interface UseEventLootboxesOutput {
   lootboxes: LootboxFE[];
   loading: boolean;
   refetch: () => void;
+  /** interval = Milliseconds */
+  startPolling: (interval: number) => void;
+  stopPolling: () => void;
 }
 
 const useEventLootboxes = (
   props: UseEventLootboxesProps
 ): UseEventLootboxesOutput => {
-  const { data, loading, error, refetch } = useQuery<
+  const { data, loading, error, refetch, startPolling, stopPolling } = useQuery<
     ViewEventLootboxesAsOrganizerResponseFE,
     QueryViewTournamentAsOrganizerArgs
   >(VIEW_EVENT_LOOTBOXES_AS_ORGANIZER, {
@@ -50,6 +53,8 @@ const useEventLootboxes = (
     lootboxes: lootboxSnapshots,
     loading,
     refetch,
+    startPolling,
+    stopPolling,
   };
 };
 

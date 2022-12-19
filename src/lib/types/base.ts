@@ -10,6 +10,7 @@ import {
 export interface EventFE {
   id: TournamentID;
   title: string;
+  createdAt: number;
 }
 
 export interface ReferralFE {

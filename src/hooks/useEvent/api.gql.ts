@@ -8,6 +8,9 @@ export interface ViewTournamentAsOrganizerResponseFE {
         tournament: {
           id: TournamentID;
           title: string;
+          timestamps: {
+            createdAt: number;
+          };
         };
       }
     | {
@@ -26,6 +29,9 @@ export const VIEW_TOURNAMENT_AS_ORGANIZER = gql`
         tournament {
           id
           title
+          timestamps {
+            createdAt
+          }
         }
       }
       ... on ResponseError {
