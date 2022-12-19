@@ -241,7 +241,7 @@ const EventShare: FunctionComponent = () => {
             <b className={styles.scanForFanTickets}>🔒 {inviteLinkShort}</b>
           </div>
           <button className={styles.frameButton1} onClick={copyInviteLink}>
-            <b className={styles.copyLink}>Copy Link</b>
+            <b className={styles.copyLink}>Copy Invite</b>
           </button>
         </div>
         <div className={styles.frameDiv5}>
