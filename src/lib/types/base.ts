@@ -23,6 +23,7 @@ export interface LootboxFE {
   nftBountyValue: string;
   maxTickets: number;
   snapshotID: LootboxTournamentSnapshotID;
+  stampImage: string;
 }
 
 export interface FrontendUser {

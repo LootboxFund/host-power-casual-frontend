@@ -10,6 +10,8 @@ import EventQRCode from "../../components/EventQRCode";
 import LoginForm from "../../components/LoginForm";
 import useEvent from "../../hooks/useEvent";
 import { TournamentID } from "@wormgraph/helpers";
+import EventLootboxImages from "../../components/EventLootboxImages";
+import useEventLootboxes from "../../hooks/useEventLootboxes";
 
 export interface NavigationState {
   referral?: ReferralFE;
@@ -22,6 +24,9 @@ const EventShare: FunctionComponent = () => {
   const { state }: { state: NavigationState } = useLocation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { event } = useEvent({
+    eventID: (eventID || "") as TournamentID,
+  });
+  const { lootboxes } = useEventLootboxes({
     eventID: (eventID || "") as TournamentID,
   });
 
@@ -90,6 +95,9 @@ const EventShare: FunctionComponent = () => {
         </button>
       </div>
       <EventQRCode referral={state.referral} />
+      <div className={styles.frameDiv1}>
+        <EventLootboxImages lootboxes={lootboxes} />
+      </div>
       <div className={styles.whitespace} />
       <div className={styles.floatingButtonContainer}>
         <div className={styles.frameDiv3}>
