@@ -257,7 +257,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
           <b className={styles.sAVECHANGES}>SAVE CHANGES</b>
         </button>
         <button className={styles.ghostButton} onClick={props.onFormCancel}>
-          <i className={styles.lightText}>cancel</i>
+          <i className={styles.lightText}>Cancel</i>
         </button>
       </div>
     </div>

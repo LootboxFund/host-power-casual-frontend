@@ -18,7 +18,7 @@ const RequireAuth: FunctionComponent<RequireAuthProps> = ({
     return (
       <Result
         icon={
-          <Spin size="large" style={{ display: "block", margin: "auto" }} />
+          <Spin size="default" style={{ display: "block", margin: "auto" }} />
         }
       />
     );

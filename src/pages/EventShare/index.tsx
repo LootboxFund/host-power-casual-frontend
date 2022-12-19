@@ -13,6 +13,7 @@ import { TournamentID } from "@wormgraph/helpers";
 import EventLootboxImages from "../../components/EventLootboxImages";
 import useEventLootboxes from "../../hooks/useEventLootboxes";
 import { MAX_IMAGES_SHOWN } from "../../components/EventLootboxImages/const";
+import { EditOutlined } from "@ant-design/icons";
 
 export interface NavigationState {
   referral?: ReferralFE;
@@ -38,6 +39,7 @@ const EventShare: FunctionComponent = () => {
   });
   const [isPolling, setIsPolling] = useState<boolean>(false);
   const hasPolledOnce = useRef<boolean>(false);
+  const showSpinner = isPolling || loadingLootboxes;
 
   useEffect(() => {
     // If event was created less than 5 minutes ago, start polling for lootboxes
@@ -51,15 +53,18 @@ const EventShare: FunctionComponent = () => {
       setIsPolling(true);
       // Poll every 5 seconds
       console.log("start polling...");
-      startPolling(5000);
+      startPolling(2500);
       hasPolledOnce.current = true;
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         console.log("stop polling - timeout");
         stopPolling();
         setIsPolling(false);
-        // Stop polling after 1.5 minutes
-        // }, 1.5 * 60 * 1000);
-      }, 0.5 * 60 * 1000);
+        // Stop polling after 1 minute
+      }, 1 * 60 * 1000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
     }
   }, [
     event?.createdAt,
@@ -141,24 +146,36 @@ const EventShare: FunctionComponent = () => {
         <button className={styles.ghostButton} onClick={navigateToEdit}>
           <b className={styles.b}>🏰</b>&nbsp;
           <i className={styles.lightText}>
-            {event?.title || "Epic Battle Event"} (click to edit)
+            {event?.title || "Epic Battle Event"} (click to edit{" "}
+            <EditOutlined />)
           </i>
         </button>
       </div>
       <EventQRCode referral={state.referral} />
       <div className={styles.frameDiv1}>
         <EventLootboxImages lootboxes={lootboxes} />
-        {(isPolling || loadingLootboxes) && [
-          <Spin key="spin-loading" />,
-          <div className={styles.frameDiv1} key="lootbox-loading-msg">
-            <i className={styles.lightText}>
-              {isPolling
-                ? "Waiting for Lootboxes to be created..."
-                : "Loading Lootboxes..."}
-            </i>
-          </div>,
-        ]}
+        {showSpinner ? (
+          [
+            <Spin key="spin-loading" />,
+            <div className={styles.frameDiv1} key="lootbox-loading-msg">
+              <i className={styles.lightText}>
+                {isPolling
+                  ? "Waiting for Lootboxes to be created..."
+                  : "Loading Lootboxes..."}
+              </i>
+            </div>,
+          ]
+        ) : (
+          <div className={styles.frameDiv1}>
+            <button className={styles.ghostButton} onClick={navigateToEdit}>
+              <i className={styles.lightText}>
+                Click to edit <EditOutlined />
+              </i>
+            </button>
+          </div>
+        )}
       </div>
+
       <div className={styles.whitespace} />
       <div className={styles.floatingButtonContainer}>
         <div className={styles.frameDiv3}>

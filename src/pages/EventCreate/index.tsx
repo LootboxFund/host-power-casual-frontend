@@ -14,7 +14,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { createEvent } = useEventCreate();
   const { user, signInAnonymously } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
   );
@@ -29,20 +29,22 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
       return;
     } else if (user === null) {
       // END STATE - sign them in anonymously
+      setLoading(true);
       signInAnonymously()
         .then((_user) => {
           console.log("new user", _user.id);
         })
         .catch((err) => {
           setErrorMessage("An error occured");
+        })
+        .finally(() => {
+          setLoading(false);
         });
       // hasRunInit.current = true;
-      setLoading(false);
       return;
     } else {
       // END STATE - user logged in already
       // hasRunInit.current = true;
-      setLoading(false);
       console.log("user", user.id);
       return;
     }
@@ -113,7 +115,7 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
       <div className={styles.frameDiv1}>
         <b className={styles.b}>🏰</b>
       </div>
-      {!loading ? (
+      {!loading && !!user ? (
         <CreateEventForm
           onCreateEvent={onEventCreate}
           onOpenAuthModal={openAuthModal}
@@ -121,6 +123,8 @@ const StartViewAdditionalSetting: FunctionComponent = () => {
       ) : (
         <div className={styles.loadingContainer}>
           <Spin size="default" style={{ display: "block", margin: "auto" }} />
+          <br />
+          <i className={styles.lightText}>Loading... Please wait a moment</i>
         </div>
       )}
       <Modal

@@ -8,6 +8,7 @@ import { FunctionComponent, useState } from "react";
 import { LootboxFE } from "../../lib/types";
 import { manifest } from "../../manifest";
 import styles from "./index.module.css";
+import { DeleteOutlined } from "@ant-design/icons";
 
 export interface EditLootboxPayload {
   name?: string;
@@ -134,7 +135,9 @@ const LootboxEditForm: FunctionComponent<LootboxEditFormProps> = (
           okType="danger"
         >
           <button className={styles.ghostButton}>
-            <i className={styles.lightText}>remove team</i>
+            <i className={styles.lightText}>
+              Remove team <DeleteOutlined />
+            </i>
           </button>
         </Popconfirm>
       </div>
