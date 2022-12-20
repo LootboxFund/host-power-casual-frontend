@@ -16,6 +16,8 @@ import { MAX_IMAGES_SHOWN } from "../../components/EventLootboxImages/const";
 import { EditOutlined } from "@ant-design/icons";
 import LootboxPreview from "../../components/LootboxPreview";
 
+const LOOTBOX_TUTORIAL_VIDEO = "https://youtu.be/So8LMw7oJ7w";
+
 export interface NavigationState {
   referral?: ReferralFE;
   nLootboxes?: number;
@@ -174,7 +176,7 @@ const EventShare: FunctionComponent = () => {
           Fans scan the QR code to claim a FREE fan ticket. If their team wins,
           fans will get a share of prize money.{" "}
           <Typography.Link
-            href="/"
+            href={LOOTBOX_TUTORIAL_VIDEO}
             target="_blank"
             className={styles.lightText}
           >
