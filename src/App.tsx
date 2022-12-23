@@ -18,19 +18,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <HeadProvider>
-      {/* <!-- Google tag (gtag.js) --> */}
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-GVHNC0FVDV"
-      />
-      {initGTag()}
-      <ApolloProvider client={client}>
-        <AuthProvider>
-          <RouterProvider router={routes} />
-        </AuthProvider>
-      </ApolloProvider>
-    </HeadProvider>
+    // <HeadProvider>
+    //   {/* <!-- Google tag (gtag.js) --> */}
+    //   <script
+    //     async
+    //     src="https://www.googletagmanager.com/gtag/js?id=G-GVHNC0FVDV"
+    //   />
+    //   {initGTag()}
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <RouterProvider router={routes} />
+      </AuthProvider>
+    </ApolloProvider>
+    // </HeadProvider>
   );
 };
 
