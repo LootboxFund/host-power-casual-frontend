@@ -52,6 +52,32 @@
   align-items: center;
   justify-content: center;
 }
+.frameDivThumbs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: var(--padding-lg) 0;
+  box-sizing: border-box;
+}
+.frameDiv1small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  background-color: var(--color-white);
+  flex-direction: column;
+  padding: var(--padding-sm) 0 0;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .frameDivThumbs {
+    padding: 0;
+  }
+}
 .frameButton {
   cursor: pointer;
   border: 0;

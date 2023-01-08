@@ -159,6 +159,32 @@ const EventShare: FunctionComponent = () => {
           </i>
         </button>
       </div>
+
+      <div className={styles.frameDivThumbs}>
+        <EventLootboxImages lootboxes={lootboxes} />
+        {
+          showSpinner && [
+            <Spin key="spin-loading" />,
+            <div className={styles.frameDiv1small} key="lootbox-loading-msg">
+              <i className={styles.lightText}>
+                {isPolling
+                  ? "Waiting for Lootboxes to be created..."
+                  : "Loading Lootboxes..."}
+              </i>
+            </div>,
+          ]
+          //  : (
+          //   <div className={styles.frameDiv1small}>
+          //     <button className={styles.ghostButton} onClick={navigateToEdit}>
+          //       <i className={styles.lightText}>
+          //         Click to edit <EditOutlined />
+          //       </i>
+          //     </button>
+          //   </div>
+          // )
+        }
+      </div>
+
       <EventQRCode referral={state.referral} />
 
       <div className={styles.frameDiv1Padding}>
@@ -185,33 +211,6 @@ const EventShare: FunctionComponent = () => {
         </p>
       </div>
 
-      <div className={styles.frameDiv1}>
-        <EventLootboxImages lootboxes={lootboxes} />
-        {showSpinner ? (
-          [
-            <Spin key="spin-loading" />,
-            <div
-              className={styles.frameDiv1}
-              key="lootbox-loading-msg"
-              style={{ paddingBottom: "0px" }}
-            >
-              <i className={styles.lightText}>
-                {isPolling
-                  ? "Waiting for Lootboxes to be created..."
-                  : "Loading Lootboxes..."}
-              </i>
-            </div>,
-          ]
-        ) : (
-          <div className={styles.frameDiv1} style={{ paddingBottom: "0px" }}>
-            <button className={styles.ghostButton} onClick={navigateToEdit}>
-              <i className={styles.lightText}>
-                Click to edit <EditOutlined />
-              </i>
-            </button>
-          </div>
-        )}
-      </div>
       <div className={styles.lootboxPreviewContainer}>
         {lootboxes
           .slice(0, isShowingAllLootboxes ? lootboxes.length : MAX_IMAGES_SHOWN)
