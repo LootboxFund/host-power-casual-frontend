@@ -1,6 +1,6 @@
 {
   "name": "host-power-casual-frontend",
-  "version": "0.1.0-prod",
+  "version": "0.1.1-demo",
   "private": true,
   "homepage": "/host/",
   "dependencies": {
