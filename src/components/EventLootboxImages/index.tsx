@@ -12,7 +12,17 @@ const EventLootboxImages: FunctionComponent<EventLootboxImagesProps> = (
   props
 ) => {
   return (
-    <div className={styles.cardHand}>
+    <div
+      className={styles.cardHand}
+      style={
+        props?.lootboxes?.length === 1
+          ? {
+              // Awkward spacing hack
+              marginBottom: "-38px",
+            }
+          : undefined
+      }
+    >
       {props.lootboxes.slice(0, MAX_IMAGES_SHOWN).map((lootbox) => {
         return (
           <ImageWithReload
