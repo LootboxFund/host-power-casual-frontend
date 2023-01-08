@@ -22,19 +22,27 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
 ) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [teamCount, setTeamCount] = useState(1);
+  const [teamCount, setTeamCount] = useState<number | undefined>(1);
   const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
   const [eventName, setEventName] = useState<string | undefined>(undefined);
   const [maxTickets, setMaxTickets] = useState<number | undefined>(undefined);
   const [ticketPrize, setTicketPrize] = useState<string | undefined>(undefined);
 
   const incrementTeamCount = () => {
-    setTeamCount((cnt) => cnt + 1);
+    setTeamCount((cnt) => {
+      if (cnt === undefined) {
+        return 1;
+      } else {
+        return cnt + 1;
+      }
+    });
   };
 
   const decrementTeamCount = () => {
     setTeamCount((cnt) => {
-      if (cnt === 0) {
+      if (cnt === undefined) {
+        return 0;
+      } else if (cnt === 0) {
         return 0;
       } else {
         return cnt - 1;
@@ -50,8 +58,10 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
     if (loading) {
       return;
     }
+    const teamCountLocal =
+      teamCount === undefined ? 0 : teamCount < 0 ? 0 : teamCount;
 
-    if (teamCount > LOOTBOX_LIMIT) {
+    if (teamCountLocal > LOOTBOX_LIMIT) {
       Modal.error({
         title: "Too many Teams",
         content: `You can only create up to ${LOOTBOX_LIMIT} lootboxes at a time`,
@@ -60,7 +70,7 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
     }
 
     const payload: OnCreateEventPayload = {
-      nLootbox: teamCount,
+      nLootbox: teamCountLocal,
       eventName: eventName,
       lootboxMaxTickets: maxTickets,
       lootboxTicketPrize: ticketPrize,
@@ -90,8 +100,17 @@ const CreateEventForm: FunctionComponent<CreateEventFormProps> = (
           className={styles.frameInput}
           type="number"
           placeholder="Teams"
-          disabled
           value={teamCount}
+          onChange={(e) => {
+            const val = e.target.valueAsNumber;
+            if (isNaN(val)) {
+              setTeamCount(undefined);
+            } else if (val < 0) {
+              setTeamCount(0);
+            } else {
+              setTeamCount(val);
+            }
+          }}
         />
         <button className={styles.frameButton1} onClick={incrementTeamCount}>
           <b className={styles.b1}>+</b>
