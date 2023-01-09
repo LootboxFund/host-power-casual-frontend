@@ -4,14 +4,17 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { EventFE, LootboxFE } from "../../lib/types";
 import styles from "./index.module.css";
 
+interface EditLootboxPayload {
+  id: LootboxID;
+  maxTickets?: number;
+  name?: string;
+  nftBountyValue?: string;
+}
+
 export interface OnEditEventFormPayload {
   id: TournamentID;
   title?: string;
-  lootboxes?: {
-    id: LootboxID;
-    maxTickets?: number;
-    name?: string;
-  }[];
+  lootboxes?: EditLootboxPayload[];
 }
 
 export interface AddTeamPayload {
@@ -41,10 +44,10 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
     props.event.title
   );
   const [maxTicketsTmp, setMaxTicketsTmp] = useState<number | undefined>(
-    props.lootboxes[0]?.maxTickets || undefined
+    props.lootboxes[0]?.maxTickets ?? undefined
   );
   const [ticketPrizeTmp, setTicketPrizeTmp] = useState<string | undefined>(
-    props.lootboxes[0]?.nftBountyValue || undefined
+    props.lootboxes[0]?.nftBountyValue ?? undefined
   );
 
   const [lootboxesTmp, setLootboxesTmp] = useState<LootboxFE[]>(
@@ -53,8 +56,8 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
 
   useEffect(() => {
     setEventNameTmp(props.event.title);
-    setMaxTicketsTmp(props.lootboxes[0]?.maxTickets || undefined);
-    setTicketPrizeTmp(props.lootboxes[0]?.nftBountyValue || undefined);
+    setMaxTicketsTmp(props.lootboxes[0]?.maxTickets ?? undefined);
+    setTicketPrizeTmp(props.lootboxes[0]?.nftBountyValue ?? undefined);
     setLootboxesTmp(props.lootboxes);
   }, [props.event, props.lootboxes]);
 
@@ -73,7 +76,7 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
       props.lootboxes.forEach((lootbox) => {
         mapping[lootbox.id] = lootbox;
       });
-      const lootboxesToEdit = lootboxesTmp
+      const lootboxesToEdit: EditLootboxPayload[] = lootboxesTmp
         .filter((lootboxTmp) => {
           const lootbox = mapping[lootboxTmp.id];
           if (!lootbox) {
@@ -89,12 +92,13 @@ const EventViewEditSettings: FunctionComponent<EventViewEditSettingsProps> = (
         })
         .map((lootboxTmp) => {
           const lootbox = mapping[lootboxTmp.id];
-          return {
-            ...lootbox,
-            maxTickets: maxTicketsTmp,
-            name: lootboxTmp.name,
-            nftBountyValue: ticketPrizeTmp,
+          const payload: EditLootboxPayload = {
+            id: lootbox.id,
+            name: lootboxTmp.name ?? undefined,
+            nftBountyValue: ticketPrizeTmp ?? undefined,
+            maxTickets: maxTicketsTmp ?? undefined,
           };
+          return payload;
         });
 
       await props.onEdit({
