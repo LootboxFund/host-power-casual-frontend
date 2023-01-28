@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { LootboxID, LootboxTournamentSnapshotID } from "@wormgraph/helpers";
+import { LootboxID } from "@wormgraph/helpers";
 
 export interface CreateLootboxResponseSuccessFE {
   createLootbox:

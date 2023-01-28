@@ -13,7 +13,7 @@
     "@types/node": "^16.18.8",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "@wormgraph/helpers": "0.7.15",
+    "@wormgraph/helpers": "0.7.39",
     "@wormgraph/manifest": "0.7.14",
     "antd": "^5.0.7",
     "easyqrcodejs": "^4.4.13",
