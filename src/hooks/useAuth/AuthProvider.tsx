@@ -38,6 +38,7 @@ export interface AuthContextType {
   linkAnonAccountWithCredential: (
     credential: EmailAuthCredential
   ) => Promise<FrontendUser>;
+  upgradeUserToAffiliate: () => Promise<null>;
   logout: () => Promise<void>;
 }
 
@@ -90,6 +91,16 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
     await _refreshUser();
 
     return convertUserToUserFE(user);
+  };
+
+  const upgradeUserToAffiliate = async (): Promise<null> => {
+    if (!user) {
+      throw new Error("No user logged in");
+    }
+
+    await upgradeToAffiliateMutation();
+
+    return null;
   };
 
   const signInWithEmailAndPassword = async (
@@ -171,6 +182,7 @@ const AuthProvider = ({ children }: PropsWithChildren<AuthProviderProps>) => {
         signInAnonymously,
         signInWithEmailAndPassword,
         linkAnonAccountWithCredential,
+        upgradeUserToAffiliate,
         logout,
       }}
     >
