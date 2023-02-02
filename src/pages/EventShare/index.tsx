@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { manifest } from "../../manifest";
 import { FrontendUser, ReferralFE } from "../../lib/types";
-import { Button, message, Modal, Spin, Typography } from "antd";
+import { Button, message, Modal, Spin, Typography, List, Alert } from "antd";
 import { EventEditNavigationState } from "../EventEdit";
 import { useAuth } from "../../hooks/useAuth";
 import EventQRCode from "../../components/EventQRCode";
@@ -15,6 +15,10 @@ import useEventLootboxes from "../../hooks/useEventLootboxes";
 import { MAX_IMAGES_SHOWN } from "../../components/EventLootboxImages/const";
 import { EditOutlined } from "@ant-design/icons";
 import LootboxPreview from "../../components/LootboxPreview";
+import {
+  buildPlayerInviteLinkForEvent,
+  buildPromoterInviteLinkForEvent,
+} from "../../lib/routes";
 
 const LOOTBOX_TUTORIAL_VIDEO = "https://youtu.be/So8LMw7oJ7w";
 
@@ -32,6 +36,13 @@ const EventShare: FunctionComponent = () => {
   const { event } = useEvent({
     eventID: (eventID || "") as TournamentID,
   });
+  const playerInviteLink = event?.inviteMetadata?.slug
+    ? buildPlayerInviteLinkForEvent(event?.inviteMetadata.slug)
+    : undefined;
+  const promoterInviteLink = event?.inviteMetadata?.slug
+    ? buildPromoterInviteLinkForEvent(event.inviteMetadata.slug)
+    : undefined;
+
   const {
     lootboxes,
     startPolling,
@@ -51,8 +62,8 @@ const EventShare: FunctionComponent = () => {
       !hasPolledOnce.current &&
       state?.nLootboxes &&
       !isPolling &&
-      event?.createdAt &&
-      Date.now() - event.createdAt < 5 * 60 * 1000 // event made within last 5 mins
+      event?.timestamps?.createdAt &&
+      Date.now() - event.timestamps.createdAt < 5 * 60 * 1000 // event made within last 5 mins
     ) {
       setIsPolling(true);
       // Poll every 5 seconds
@@ -71,7 +82,7 @@ const EventShare: FunctionComponent = () => {
       };
     }
   }, [
-    event?.createdAt,
+    event?.timestamps?.createdAt,
     startPolling,
     stopPolling,
     isPolling,
@@ -209,6 +220,78 @@ const EventShare: FunctionComponent = () => {
             Watch tutorial.
           </Typography.Link>
         </p>
+        <br />
+        <Alert
+          type="info"
+          message={
+            <div style={{ textAlign: "start", color: "#00000073" }}>
+              <Typography.Text type="secondary" style={{ fontWeight: 800 }}>
+                PRO TIP:
+              </Typography.Text>
+              <ul>
+                <li>
+                  <Typography.Text
+                    type="secondary"
+                    style={{ textAlign: "start" }}
+                  >
+                    Share{" "}
+                    <Typography.Link
+                      href={inviteLink}
+                      rel="noreferrer"
+                      target="_blank"
+                      copyable={{
+                        text: `Come join my event & collect our LOOTBOX tickets so that you can win FREE stuff! \n${inviteLink}`,
+                      }}
+                    >
+                      this link
+                    </Typography.Link>{" "}
+                    with <b>fans</b> to invite them to your event
+                  </Typography.Text>
+                </li>
+
+                <li>
+                  <Typography.Text
+                    type="secondary"
+                    style={{ textAlign: "start" }}
+                  >
+                    Share{" "}
+                    <Typography.Link
+                      href={playerInviteLink}
+                      rel="noreferrer"
+                      target="_blank"
+                      copyable={{
+                        text: `Join my event by making a Lootbox! Click here: \n${playerInviteLink}`,
+                      }}
+                    >
+                      this link
+                    </Typography.Link>{" "}
+                    with <b>players</b> to make Lootboxes for your event
+                  </Typography.Text>
+                </li>
+                <li>
+                  <Typography.Text
+                    type="secondary"
+                    style={{ textAlign: "start" }}
+                  >
+                    Share{" "}
+                    <Typography.Link
+                      href={promoterInviteLink}
+                      rel="noreferrer"
+                      target="_blank"
+                      copyable={{
+                        text: `Join my event by making a Lootbox! Click here: \n${promoterInviteLink}`,
+                      }}
+                    >
+                      this link
+                    </Typography.Link>{" "}
+                    with <b>promoters & KOLs</b> to make Lootboxes for your
+                    event
+                  </Typography.Text>
+                </li>
+              </ul>
+            </div>
+          }
+        />
       </div>
 
       <div className={styles.lootboxPreviewContainer}>

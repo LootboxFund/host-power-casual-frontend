@@ -1,13 +1,11 @@
 import { gql } from "@apollo/client";
-import { LootboxID, TournamentID } from "@wormgraph/helpers";
+import { LootboxID } from "@wormgraph/helpers";
+import { EventFE } from "../../lib/types";
 
 export interface EditEventResponseFE {
   editTournament:
     | {
-        tournament: {
-          id: TournamentID;
-          title: string;
-        };
+        tournament: EventFE;
         __typename: "EditTournamentResponseSuccess";
       }
     | {
@@ -26,6 +24,16 @@ export const EDIT_EVENT = gql`
         tournament {
           id
           title
+          inviteMetadata {
+            slug
+            playerDestinationURL
+            promoterDestinationURL
+            maxPlayerLootbox
+            maxPromoterLootbox
+          }
+          timestamps {
+            createdAt
+          }
         }
       }
       ... on ResponseError {

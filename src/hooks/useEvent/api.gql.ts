@@ -1,17 +1,11 @@
 import { gql } from "@apollo/client";
-import { TournamentID } from "@wormgraph/helpers";
+import { EventFE } from "../../lib/types";
 
 export interface ViewTournamentAsOrganizerResponseFE {
   viewTournamentAsOrganizer:
     | {
         __typename: "ViewTournamentAsOrganizerResponseSuccess";
-        tournament: {
-          id: TournamentID;
-          title: string;
-          timestamps: {
-            createdAt: number;
-          };
-        };
+        tournament: EventFE;
       }
     | {
         __typename: "ResponseError";
@@ -29,6 +23,13 @@ export const VIEW_TOURNAMENT_AS_ORGANIZER = gql`
         tournament {
           id
           title
+          inviteMetadata {
+            slug
+            playerDestinationURL
+            promoterDestinationURL
+            maxPlayerLootbox
+            maxPromoterLootbox
+          }
           timestamps {
             createdAt
           }

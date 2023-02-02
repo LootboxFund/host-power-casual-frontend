@@ -34,8 +34,9 @@ const useEvent = (props: UseEventProps): UseEventOutput => {
       ? {
           id: data.viewTournamentAsOrganizer.tournament.id,
           title: data.viewTournamentAsOrganizer.tournament.title,
-          createdAt:
-            data.viewTournamentAsOrganizer.tournament.timestamps.createdAt,
+          inviteMetadata:
+            data.viewTournamentAsOrganizer.tournament.inviteMetadata,
+          timestamps: data.viewTournamentAsOrganizer.tournament.timestamps,
         }
       : undefined;
 
