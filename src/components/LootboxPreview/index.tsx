@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { LootboxFE } from "../../lib/types";
 import styles from "./index.module.css";
 import ImageWithReload from "../ImageWithReload";
-import { convertFilenameToThumbnail } from "../../lib/storage";
+import { convertFilenameToThumbnail } from "@wormgraph/helpers";
 
 interface LootboxPreviewProps {
   lootbox: LootboxFE;
