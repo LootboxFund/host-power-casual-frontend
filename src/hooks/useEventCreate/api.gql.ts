@@ -1,16 +1,11 @@
 import { gql } from "@apollo/client";
-import { ReferralID, ReferralSlug, TournamentID } from "@wormgraph/helpers";
+import { ReferralID, ReferralSlug } from "@wormgraph/helpers";
+import { EventFE } from "../../lib/types";
 
 export interface CreateEventResponseFE {
   createTournament:
     | {
-        tournament: {
-          id: TournamentID;
-          title: string;
-          timestamps: {
-            createdAt: number;
-          };
-        };
+        tournament: EventFE;
         __typename: "CreateTournamentResponseSuccess";
       }
     | {
@@ -29,6 +24,13 @@ export const CREATE_EVENT = gql`
         tournament {
           id
           title
+          inviteMetadata {
+            slug
+            playerDestinationURL
+            promoterDestinationURL
+            maxPlayerLootbox
+            maxPromoterLootbox
+          }
           timestamps {
             createdAt
           }

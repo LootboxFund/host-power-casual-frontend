@@ -1,4 +1,5 @@
 import {
+  EventInviteSlug,
   LootboxID,
   LootboxTournamentSnapshotID,
   ReferralID,
@@ -7,10 +8,21 @@ import {
   UserID,
 } from "@wormgraph/helpers";
 
+export interface InviteMetadataFE {
+  slug: EventInviteSlug;
+  playerDestinationURL: string | null;
+  promoterDestinationURL: string | null;
+  maxPlayerLootbox: number;
+  maxPromoterLootbox: number;
+}
+
 export interface EventFE {
   id: TournamentID;
   title: string;
-  createdAt: number;
+  timestamps: {
+    createdAt: number;
+  };
+  inviteMetadata: InviteMetadataFE;
 }
 
 export interface ReferralFE {

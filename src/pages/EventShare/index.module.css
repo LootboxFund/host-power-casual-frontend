@@ -22,6 +22,7 @@
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .frameDiv {
   align-self: stretch;

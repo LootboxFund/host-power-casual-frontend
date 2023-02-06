@@ -11,9 +11,11 @@ import {
   MutationCreateReferralArgs,
   MutationCreateTournamentArgs,
   ReferralType,
+  StatusCode,
 } from "../../api/graphql/generated/types";
 import { useMutation } from "@apollo/client";
 import { EventFE, ReferralFE } from "../../lib/types";
+import { useAuth } from "../useAuth";
 
 export interface CreateEventPayload {
   title?: string;
@@ -28,6 +30,7 @@ export interface CreateEventResponseSuccessFE {
 }
 
 const useEventCreate = () => {
+  const { upgradeUserToAffiliate } = useAuth();
   const [createEventMutation, { loading: loadingEventCreate }] = useMutation<
     CreateEventResponseFE,
     MutationCreateTournamentArgs
@@ -57,13 +60,31 @@ const useEventCreate = () => {
     let createdEvent: EventFE;
     let createdReferral: ReferralFE;
 
-    const eventResponse = await createEventMutation({
+    let eventResponse = await createEventMutation({
       variables: {
         payload: {
           title: payload.title,
         },
       },
     });
+
+    // Catch errors if no affiliate is found and auto upgrade to affiliate & retry
+    if (
+      eventResponse?.data?.createTournament?.__typename === "ResponseError" &&
+      eventResponse.data.createTournament.error.code ===
+        StatusCode.AffiliateNotFound
+    ) {
+      console.log("caught no-affiliate");
+      // auto upgrade to affiliate
+      await upgradeUserToAffiliate();
+      eventResponse = await createEventMutation({
+        variables: {
+          payload: {
+            title: payload.title,
+          },
+        },
+      });
+    }
 
     if (
       eventResponse?.data?.createTournament?.__typename ===
@@ -72,8 +93,9 @@ const useEventCreate = () => {
       createdEvent = {
         id: eventResponse.data.createTournament.tournament.id,
         title: eventResponse.data.createTournament.tournament.title,
-        createdAt:
-          eventResponse.data.createTournament.tournament.timestamps.createdAt,
+        inviteMetadata:
+          eventResponse.data.createTournament.tournament.inviteMetadata,
+        timestamps: eventResponse.data.createTournament.tournament.timestamps,
       };
     } else {
       throw new Error("An error occured!");
